@@ -160,10 +160,7 @@ def print_tables(data_dict):
 
 if __name__ == "__main__":
     DATA = initial_read()
-    if DATA == None:
-        # Site is down, don't attempt a reread
-        return
-    while True:
+    while DATA != None:
         DATA = scrape_results(DATA)
         HTML = write_html(DATA)
         print "Writing file(s)."
