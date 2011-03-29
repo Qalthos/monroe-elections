@@ -26,9 +26,9 @@ from new_html import write_html
 #BASE_URL = "http://www.london.ca/elections/results/"
 #BASE_URL = "http://city.waterloo.on.ca/election2010/"
 #BASE_URL = "http://guelph.ca/vote/uploads/results/"
-BASE_URL = "http://66.192.47.50/"
+BASE_URL = "http://enr.monroecounty.gov/"
 
-OFFLINE = True
+OFFLINE = False
 
 
 def initial_read():
