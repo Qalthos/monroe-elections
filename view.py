@@ -42,8 +42,6 @@ FOOTER = """
       </td><td colspan=2>
         <div id="contest"></div>
       </td></tr>
-      <tr><td colspan=2>
-      </td></tr>
     </table>
     <div class="push"></div>
     </div> <!-- wrapper -->
