@@ -29,9 +29,16 @@ FOOTER = """
       </td></tr>
       <tr><td colspan=2>
         <a name='key'/>
-        A blank ballot is a ballot which has been handed in with no votes recorded on it.<br/>
-        An undervote occurs when the number of choices selected by a voter in a contest is less than the maximum number allowed for that contest or when no selection is made for a single choice contest. (Wikipedia)<br/>
-        An overvote occurs when one votes for more than the maximum number of selections allowed in a contest. (Wikipedia)<br/>
+        A blank ballot is a ballot which has been handed in with
+        no votes recorded on it.<br/>
+
+        An undervote occurs when the number of choices selected by a voter
+        in a contest is less than the maximum number allowed for that
+        contest or when no selection is made for a single choice
+        contest. (Wikipedia)<br/>
+
+        An overvote occurs when one votes for more than the maximum
+        number of selections allowed in a contest. (Wikipedia)<br/>
       </td></tr>
     </table>
   </body>
