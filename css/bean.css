@@ -1,0 +1,19 @@
+.wrapper {
+        min-height: 100%;
+        width: 100%;
+        height: auto !important;
+        height: 100%;
+        margin: 0 auto -60px;
+}
+.footer, .push {
+        height: 120px;
+}
+.footer {
+        text-align: center;
+        font-size:80%;
+}
+
+img.foss-logo {
+        vertical-align: middle;
+        height: 48px;
+}

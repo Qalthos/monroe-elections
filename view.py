@@ -13,14 +13,29 @@ from operator import itemgetter
 HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
+    <link rel='stylesheet' href='css/bean.css' type='text/css'>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery.progressbar.min.js"></script>
 	<script type="text/javascript" src="js/election.js"></script>
   </head>
   <body>
+<div class="wrapper">
       <a href="http://github.com/ralphbean/monroe-elections"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
     <table>"""
 
+
+REAL_FOOTER = """
+<div class="footer">
+    <p>A blank ballot is a ballot which has been handed in with
+    no votes recorded on it.</p>
+    <p>An undervote occurs when the number of choices selected by a voter
+    in a contest is less than the maximum number allowed for that
+    contest or when no selection is made for a single choice
+    contest. (Wikipedia)</p>
+    <p>An overvote occurs when one votes for more than the maximum
+    number of selections allowed in a contest. (Wikipedia)</p>
+</div>
+"""
 FOOTER = """
       <tr><td width="30%">
         <div id="area"></div>
@@ -28,21 +43,14 @@ FOOTER = """
         <div id="contest"></div>
       </td></tr>
       <tr><td colspan=2>
-        <a name='key'/>
-        A blank ballot is a ballot which has been handed in with
-        no votes recorded on it.<br/>
-
-        An undervote occurs when the number of choices selected by a voter
-        in a contest is less than the maximum number allowed for that
-        contest or when no selection is made for a single choice
-        contest. (Wikipedia)<br/>
-
-        An overvote occurs when one votes for more than the maximum
-        number of selections allowed in a contest. (Wikipedia)<br/>
       </td></tr>
     </table>
+    <div class="push"></div>
+    </div> <!-- wrapper -->
+    {REAL_FOOTER}
   </body>
-</html>"""
+</html>""".format(REAL_FOOTER=REAL_FOOTER)
+
 BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WOR', 'IND']
 
 def write_html(data_dict):
@@ -69,7 +77,8 @@ def write_html(data_dict):
 def headers(election, areatypes):
     """Writes out election information to a basic HTML file."""
 
-    text = ["<tr><td colspan=3><h1>Unofficial data for %s %s</h1></td></tr>\n" %\
+    #text.append("Brought to you by <br>")
+    text = ["<tr><td colspan=3><h1><a href=\"http://foss.rit.edu\" target=\"_blank\"><img class='foss-logo' src=\"http://foss.rit.edu/files/logo.png\" alt=\"FOSS@RIT\" border=none></a>Unofficial data for %s %s</h1></td></tr>\n" %\
              (election['jd'], election['des'])]
     text.append("<tr><td colspan=2 width='50%%'>")
     text.append("<ul style='list-style-type: none'>\n")
@@ -83,7 +92,6 @@ def headers(election, areatypes):
     text.append("<h2>Reporting Precincts: %s/%s</h2>\n" %
              (election['clpol'], election['pol']))
     text.append("<h3>Last updated: %s</h3>\n" % election['ts'])
-    text.append("Brought to you by <br><a href=\"http://foss.rit.edu\" target=\"_blank\"><img src=\"http://foss.rit.edu/files/logo.png\" alt=\"FOSS@RIT\" border=none></a>")
     text.append("</td></tr>")
     return text
 
