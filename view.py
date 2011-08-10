@@ -26,14 +26,14 @@ HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 REAL_FOOTER = """
 <div class="footer">
-    <p>A blank ballot is a ballot which has been handed in with
-    no votes recorded on it.</p>
-    <p>An undervote occurs when the number of choices selected by a voter
+    A blank ballot is a ballot which has been handed in with
+    no votes recorded on it.</br>
+    An undervote occurs when the number of choices selected by a voter
     in a contest is less than the maximum number allowed for that
     contest or when no selection is made for a single choice
-    contest. (Wikipedia)</p>
-    <p>An overvote occurs when one votes for more than the maximum
-    number of selections allowed in a contest. (Wikipedia)</p>
+    contest. (Wikipedia)</br>
+    An overvote occurs when one votes for more than the maximum
+    number of selections allowed in a contest. (Wikipedia)</br>
 </div>
 """
 FOOTER = """

@@ -55,4 +55,5 @@ h1, h2, h3 {
 img.foss-logo {
         vertical-align: middle;
         height: 48px;
+        margin-right: 32px;
 }
