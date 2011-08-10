@@ -2,6 +2,15 @@
 | Monroe Election						|
 +---------------------------------------------------------------+
 
+08/10/2011 --- Beau
+Create Horizontal progress bar 
+Added files: ~/style/main.css   ##Contains most basic style information for creating the graphs
+Graphs will now be div tags with the percent as a number in the middle. (not impimented yet )
+The width as a percentage will be 
+
+## These are some basic commands for JQuery
+$("#bar").width();  ## will return the current width of the element
+$("#bar").width(xxx);   ## xx will be a value between 0 -200px
 
 
 
