@@ -15,6 +15,7 @@
 #
 # Author: Nathaniel Case
 #         Ralph Bean -- http://threebean.org
+# 	  Beau Bouchard -- http://beaubouchard.com
 
 from BeautifulSoup import BeautifulStoneSoup
 from time import sleep
