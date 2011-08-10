@@ -14,10 +14,12 @@
 # along with this code.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Author: Nathaniel Case
+#         Ralph Bean -- http://threebean.org
 
 from BeautifulSoup import BeautifulStoneSoup
 from time import sleep
 from urllib2 import urlopen, URLError
+import optparse
 
 #from html import write_html
 from new_html import write_html
@@ -159,12 +161,32 @@ def print_tables(data_dict):
 
 
 if __name__ == "__main__":
+    parser = optparse.OptionParser()
+    parser.add_option("-l", "--loop", dest="loop",
+                      action="store_true", default=False,
+                      help="run in a loop (infinitely)")
+    parser.add_option("-i", "--interval", dest="interval",
+                      default=120,
+                      help="number of seconds to sleep between runs")
+    options, args = parser.parse_args()
+
+    try:
+        float(options.interval)
+    except TypeError as e:
+        print "Interval *must* be a number, not '", options.interval, "'"
+        sys.exit(1)
+
+    print "Reading data"
     DATA = initial_read()
-    while DATA != None:
+    while True:
+        print "Scraping results"
         DATA = scrape_results(DATA)
-        HTML = write_html(DATA)
+
         print "Writing file(s)."
-        if OFFLINE:
+        HTML = write_html(DATA)
+
+        if not options.loop:
             break
-        else:
-            sleep(120)
+
+        print "Sleeping for", options.interval, "seconds"
+        sleep(float(options.interval))
