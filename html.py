@@ -3,11 +3,11 @@ This is the old, less fancy HTML renderer for the election scraper.
 
 It has lots of information, but doesn't look very good.
 
-author: Nathaniel Case
+author: Nathaniel
 
 """
 
-from operator import itemgetter
+from operator import
 
 HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -15,14 +15,14 @@ HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		<script type="text/javascript" src="js/jquery.js"></script>
         <script type='text/javascript'>
         $(document).ready(function() {
-          //ACCORDION BUTTON ACTION	
+          //ACCORDION BUTTON ACTION
           $('tr.button').click(function() {
-            $('tr.content').slideUp('slow');	
+            $('tr.content').slideUp('slow');
             //$(this).nextUntil('tr').slideDown('slow');
             $(this).next().slideDown('slow');
           });
 
-          //HIDE THE DIVS ON PAGE LOAD	
+          //HIDE THE DIVS ON PAGE LOAD
           $("tr.content").hide();
         });
         </script>
@@ -44,12 +44,12 @@ def write_html(data_dict):
     text.extend(areas(data_dict['areatype'], data_dict['area'], data_dict['contest']))
     text.extend(contests(data_dict['contest'], data_dict['choice'], data_dict['party']))
     text.append(FOOTER)
-    
+
     container_file = open('post_index.html', 'w')
     container_file.writelines(text)
     container_file.close()
-    
-    
+
+
 def headers(election, areatypes):
     """Writes out election information to a basic HTML file."""
 
@@ -64,7 +64,7 @@ def headers(election, areatypes):
                  (areatype['id'], areatype['nm']))
     text.append("<a href='#contests'>List of all races in %s</a><br/>\n" %
              election['jd'])
-    return text
+    return
 
 
 def areas(areatypes, areas, contests):
@@ -83,7 +83,7 @@ def areas(areatypes, areas, contests):
                         text.append("<tr><td><a href='#%s'>%s</a></td></tr>\n" %
                                  (contest['id'], contest['nm']))
         text.append("</table><br/>\n")
-    return text
+    return
 
 
 def contests(contests, choices, parties):
@@ -118,13 +118,13 @@ def contests(contests, choices, parties):
         text.append("<tr><td/><td colspan=2>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>" % contest['uv'])
         text.append("<tr><td/><td colspan=2>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>" % contest['ov'])
         text.append("</table><br/>\n")
-    return text
+    return
 
 
 def sort_by_s(dict_to_sort):
     """
-    Takes a dictionary of dictionaries where each inner dictionary has a
-    sort value called s.  The function emits a new list sorted on s of the
+    Takes a dictionary of dictionaries where each inner dictionary has
+    sort value called s.  The function emits a new list sorted on s of
     inner dictionaries.
 
     """
