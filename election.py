@@ -21,8 +21,7 @@ from time import sleep
 from urllib2 import urlopen, URLError
 import optparse
 
-#from html import write_html
-from new_html import write_html
+from view import write_html
 
 # A few known sources of valid XML files
 #BASE_URL = "http://www.london.ca/elections/results/"
