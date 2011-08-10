@@ -74,13 +74,13 @@ def write_html(data_dict):
     area_file = open("area.html", 'w')
     area_file.writelines(text)
     area_file.close()
-    
+
     text = write_contests(data_dict['contest'], data_dict['choice'], data_dict['party'])
     contest_file = open("contest.html", 'w')
     contest_file.writelines(text)
     contest_file.close()
-    
-    
+
+
 def headers(election, areatypes):
     """Writes out election information to a basic HTML file."""
 
