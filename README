@@ -1,0 +1,16 @@
++---------------------------------------------------------------+
+| Monroe Election						|
++---------------------------------------------------------------+
+
+
+
+
+
+=== Author: Beau Bouchard
+	Android Goals:
+	- Develope widgit which reads the xml data from the foss@rit website.
+	- Displays bar graph for each canidate calculating percentage of votes
+	- Party names, and bargraph colors will match political colors (red = rep, blue = Demo, green = indie)
+	
+	
+
