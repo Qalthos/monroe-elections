@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<results ts="5/24/2011 10:16:27 PM" nm="2011 CD 26 Special Election" fin="1" bal="0" vot="0" tab="0" cltab="0" pol="90" clpol="90" stpol="0">
+  <choices>
+    <choice id="1" tot="1" vot="8909" e="-1" />
+    <choice id="1" tot="0" pid="1" vot="8018" />
+    <choice id="1" tot="0" pid="4" vot="891" />
+    <choice id="2" tot="1" vot="9060" e="1" />
+    <choice id="2" tot="0" pid="3" vot="2288" />
+    <choice id="2" tot="0" pid="5" vot="479" />
+    <choice id="2" tot="0" pid="2" vot="6293" />
+    <choice id="3" tot="1" vot="376" e="-1" />
+    <choice id="3" tot="0" pid="6" vot="376" />
+    <choice id="4" tot="1" vot="1681" e="-1" />
+    <choice id="4" tot="0" pid="7" vot="1681" />
+    <choice id="5" tot="1" vot="76" e="-1" />
+  </choices>
+  <contests>
+    <contest id="1001" bal="20124" bl="18" uv="18" ov="4" wr="0" />
+  </contests>
+  <areas>
+    <area id="1" bal="0" vot="0" tab="0" cltab="0" pol="90" clpoll="90" stpoll="0" />
+  </areas>
+</results>

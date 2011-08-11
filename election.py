@@ -17,10 +17,14 @@
 #         Ralph Bean -- http://threebean.org
 # 	  Beau Bouchard -- http://beaubouchard.com
 
+import optparse
+import urllib
+import os
+import gitsupport
+
 from BeautifulSoup import BeautifulStoneSoup
 from time import sleep
 from urllib2 import urlopen, URLError
-import optparse
 
 from view import write_html, write_json
 
@@ -29,6 +33,7 @@ from view import write_html, write_json
 #BASE_URL = "http://city.waterloo.on.ca/election2010/"
 #BASE_URL = "http://guelph.ca/vote/uploads/results/"
 BASE_URL = "http://enr.monroecounty.gov/"
+BASE_DIR = os.path.abspath('/'.join(__file__.split('/')[:-1]))
 
 OFFLINE = False
 
@@ -78,13 +83,16 @@ def scrape_results(data):
 
     """
 
-    if OFFLINE:
-        html = file("results.xml").read()
-    else:
-        try:
-            html = urlopen("%sresults.xml" % BASE_URL)
-        except URLError:
-            return data
+    url = "%sresults.xml" % BASE_URL
+
+    os.chdir(BASE_DIR + "/git-submodules")
+
+    urllib.urlretrieve(url, 'results.xml')
+    gitsupport.commitAll()
+    html = file("results.xml").read()
+
+    os.chdir(BASE_DIR)
+
     soup = BeautifulStoneSoup(html)
 
     election = soup.find('results')
