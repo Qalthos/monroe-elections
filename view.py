@@ -8,6 +8,7 @@ author: Nathaniel Case
 
 """
 
+import simplejson
 from operator import itemgetter
 
 HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,6 +51,13 @@ FOOTER = """
 </html>""".format(REAL_FOOTER=REAL_FOOTER)
 
 BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WOR', 'IND']
+
+def write_json(data_dict):
+    json_filename = 'json/' + data_dict['election']['nm']
+    json_filename = json_filename.replace(' ', '-') + '.json'
+
+    with open(json_filename, 'w') as f:
+        f.write(simplejson.dumps(data_dict))
 
 def write_html(data_dict):
     """This method gets called to build the HTML for the scraper."""

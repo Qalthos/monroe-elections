@@ -22,7 +22,7 @@ from time import sleep
 from urllib2 import urlopen, URLError
 import optparse
 
-from view import write_html
+from view import write_html, write_json
 
 # A few known sources of valid XML files
 #BASE_URL = "http://www.london.ca/elections/results/"
@@ -181,6 +181,9 @@ if __name__ == "__main__":
     while True:
         print "Scraping results"
         DATA = scrape_results(DATA)
+
+        print "Writing json."
+        write_json(DATA)
 
         print "Writing file(s)."
         HTML = write_html(DATA)
