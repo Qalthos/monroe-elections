@@ -85,7 +85,7 @@ def scrape_results(data):
 
     url = "%sresults.xml" % BASE_URL
 
-    os.chdir(BASE_DIR + "/git-submodules")
+    os.chdir(BASE_DIR + "/data-submodule")
 
     urllib.urlretrieve(url, 'results.xml')
     gitsupport.commitAll()
