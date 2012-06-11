@@ -32,9 +32,14 @@ from view import write_html, write_json
 #BASE_URL = "http://city.waterloo.on.ca/election2010/"
 #BASE_URL = "http://guelph.ca/vote/uploads/results/"
 BASE_URL = "http://enr.monroecounty.gov/"
-BASE_DIR = os.path.abspath('/'.join(__file__.split('/')[:-1]))
 
 OFFLINE = False
+# These have election-specific directories.  In these examples, the 2012
+# Republican Presidential Primary
+#BASE_URL = "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/"
+#BASE_URL = "http://apps.suffolkcountyny.gov/boe/eleres/12pr/"
+
+BASE_DIR = os.path.abspath('/'.join(__file__.split('/')[:-1]))
 
 
 def initial_read():
