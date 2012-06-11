@@ -47,13 +47,13 @@ def initial_read():
 
     """
 
-    if OFFLINE:
-        html = file("ElectionEvent.xml").read()
-    else:
-        try:
-            html = urlopen("%sElectionEvent.xml" % BASE_URL)
-        except URLError:
-            return None
+    filename = 'ElectionEvent.xml'
+    if not OFFLINE:
+        filename = pull_file(filename)
+
+    with open(filename) as file_:
+        html = file_.read()
+
     soup = BeautifulStoneSoup(html)
 
     election = soup.find('election')
