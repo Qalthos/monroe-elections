@@ -12,6 +12,8 @@ def commitFile(file_name):
     pipe.wait()
 
 def commit(fn):
-    def git():
-        commitFile(fn())
+    def git(filename):
+        new_file = fn(filename)
+        commitFile(new_file)
+        return new_file
     return git
