@@ -33,7 +33,6 @@ from view import write_html, write_json
 #BASE_URL = "http://guelph.ca/vote/uploads/results/"
 BASE_URL = "http://enr.monroecounty.gov/"
 
-OFFLINE = False
 # These have election-specific directories.  In these examples, the 2012
 # Republican Presidential Primary
 #BASE_URL = "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/"
@@ -42,7 +41,7 @@ OFFLINE = False
 BASE_DIR = os.path.abspath('/'.join(__file__.split('/')[:-1]))
 
 
-def initial_read():
+def initial_read(offline):
     """
     Reads the contents of ElectionEvent.xml.
     This file should not change during the election, so should only need to be
@@ -53,7 +52,7 @@ def initial_read():
     """
 
     filename = 'ElectionEvent.xml'
-    if not OFFLINE:
+    if not offline:
         filename = pull_file(filename)
 
     with open(filename) as file_:
@@ -185,6 +184,9 @@ if __name__ == "__main__":
     parser.add_option("-i", "--interval", dest="interval",
                       default=120,
                       help="number of seconds to sleep between runs")
+    parser.add_option('-o', '--offline', dest='offline',
+                      action='store_true', default=False,
+                      help='run offline (using files in current directory')
     options, args = parser.parse_args()
 
     try:
@@ -194,7 +196,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print "Reading data"
-    DATA = initial_read()
+    DATA = initial_read(options.offline)
     while True:
         print "Scraping results"
         DATA = scrape_results(DATA)
