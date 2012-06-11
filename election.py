@@ -18,14 +18,13 @@
 # 	  Beau Bouchard -- http://beaubouchard.com
 
 import optparse
-import urllib
 import os
-import gitsupport
+from time import sleep
+import urllib
 
 from BeautifulSoup import BeautifulStoneSoup
-from time import sleep
-from urllib2 import urlopen, URLError
 
+from gitsupport import commitAll
 from view import write_html, write_json
 
 # A few known sources of valid XML files
@@ -75,6 +74,18 @@ def initial_read():
             'contest': contest, 'choice': choice, 'party': party}
 
 
+def pull_file(filename):
+    """Pulls a file from a remote source and saves it to the disk."""
+    url = "%s%s" % (BASE_URL, filename)
+
+    os.chdir(BASE_DIR + "/data-submodule")
+    (filename, headers) = urllib.urlretrieve(url, filename)
+    commitAll()
+    os.chdir(BASE_DIR)
+
+    return BASE_DIR + '/data-submodule/' + filename
+
+
 def scrape_results(data):
     """
     Reads the contents of results.xml.
@@ -83,15 +94,8 @@ def scrape_results(data):
 
     """
 
-    url = "%sresults.xml" % BASE_URL
-
-    os.chdir(BASE_DIR + "/data-submodule")
-
-    urllib.urlretrieve(url, 'results.xml')
-    gitsupport.commitAll()
+    pull_file('results.xml')
     html = file("results.xml").read()
-
-    os.chdir(BASE_DIR)
 
     soup = BeautifulStoneSoup(html)
 
