@@ -90,7 +90,7 @@ def pull_file(filename):
     return BASE_DIR + '/data-submodule/' + filename
 
 
-def scrape_results(data):
+def scrape_results(data, offline):
     """
     Reads the contents of results.xml.
     This is the file that has all the changing information, so this is the
@@ -98,8 +98,12 @@ def scrape_results(data):
 
     """
 
-    pull_file('results.xml')
-    html = file("results.xml").read()
+    filename = 'results.xml'
+    if not offline:
+        filename = pull_file(filename)
+
+    with open(filename) as file_:
+        html = file_.read()
 
     soup = BeautifulStoneSoup(html)
 
@@ -199,7 +203,7 @@ if __name__ == "__main__":
     DATA = initial_read(options.offline)
     while True:
         print "Scraping results"
-        DATA = scrape_results(DATA)
+        DATA = scrape_results(DATA, options.offline)
 
         print "Writing json."
         write_json(DATA)
