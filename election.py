@@ -209,7 +209,7 @@ if __name__ == "__main__":
         write_json(DATA)
 
         print "Writing file(s)."
-        HTML = write_html(DATA)
+        write_html(DATA)
 
         if not options.loop:
             break
