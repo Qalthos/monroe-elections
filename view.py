@@ -8,7 +8,11 @@ author: Nathaniel Case
 
 """
 
-import simplejson
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 from operator import itemgetter
 
 HEADER = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +61,7 @@ def write_json(data_dict):
     json_filename = json_filename.replace(' ', '-') + '.json'
 
     with open(json_filename, 'w') as f:
-        f.write(simplejson.dumps(data_dict))
+        f.write(json.dumps(data_dict))
 
 def write_html(data_dict):
     """This method gets called to build the HTML for the scraper."""
