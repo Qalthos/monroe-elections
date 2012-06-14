@@ -98,11 +98,11 @@ def headers(election, areatypes):
     text.append("</ul>")
     text.append("<!--<a href='#contest' class='load'>List of all races in %s</a><br/>-->\n" %
              election['jd'])
-    text.append("</td><td>")
+    text.append("</td><td id='progress'><div id='in_progress'>")
     text.append("<h2>Reporting Precincts: %s/%s</h2>\n" %
              (election['clpol'], election['pol']))
     text.append("<h3>Last updated: %s</h3>\n" % election['ts'])
-    text.append("</td></tr>")
+    text.append("</div></td></tr>")
     return text
 
 
