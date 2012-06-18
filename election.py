@@ -81,14 +81,39 @@ def initial_read(county):
     data['election'] = {'nm': election['nm'], 'des': election['des'], \
       'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
 
-    areatypes = soup.findAll('areatype')
-    data['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
+    contests = soup.findAll('contest')
+    data['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
+    seen_aids = set()
+    for contest in data['contest'].values():
+        seen_aids.add(contest['aid'])
 
     areas = soup.findAll('area')
     data['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
+    seen_atids = set()
+    dropped_aids = set()
+    for aid, area in data['area'].items():
+        if aid not in seen_aids:
+            # No contest is attached to this area, so we can ignore it
+            dropped_aids.add(aid)
+        else:
+            seen_atids.add(area['atid'])
+    for aid in dropped_aids:
+        del data['area'][aid]
 
-    contests = soup.findAll('contest')
-    data['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
+    areatypes = soup.findAll('areatype')
+    data['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
+    dropped_atids = set()
+    for atid in data['areatype']:
+        if atid not in seen_atids:
+            # No areas attached to an areatype?  Drop those too.
+            dropped_atids.add(atid)
+    for atid in dropped_atids:
+        del data['areatype'][atid]
+
+    print(seen_aids)
+    print(dropped_aids)
+    print(seen_atids)
+    print(dropped_atids)
 
     parties = soup.findAll('party')
     data['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
@@ -119,7 +144,11 @@ def scrape_results(county, data):
 
     results = soup_to_dict(soup.findAll('area'), 'id', ['bal', 'vot', 'pol', 'clpol'])
     for id_ in results:
-        data['area'][id_].update(results[id_])
+        try:
+            data['area'][id_].update(results[id_])
+        except KeyError:
+            # We probably dropped it, so ignore.
+            pass
 
     results = soup_to_dict(soup.findAll('contest'), 'id', ['bal', 'bl', 'uv', 'ov'])
     for id_ in results:
