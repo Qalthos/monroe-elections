@@ -41,7 +41,7 @@ BASE_URL = "http://enr.monroecounty.gov/"
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 
-def initial_read(offline):
+def initial_read():
     """
     Reads the contents of ElectionEvent.xml.
     This file should not change during the election, so should only need to be
@@ -51,10 +51,7 @@ def initial_read(offline):
 
     """
 
-    filename = 'ElectionEvent.xml'
-    if not offline:
-        filename = pull_file(filename)
-
+    filename = pull_file('ElectionEvent.xml')
     with open(filename) as file_:
         html = file_.read()
 
@@ -96,7 +93,7 @@ def pull_file(filename):
     return os.path.join(filepath, filename)
 
 
-def scrape_results(data, offline):
+def scrape_results(data):
     """
     Reads the contents of results.xml.
     This is the file that has all the changing information, so this is the
@@ -104,10 +101,7 @@ def scrape_results(data, offline):
 
     """
 
-    filename = 'results.xml'
-    if not offline:
-        filename = pull_file(filename)
-
+    filename = pull_file('results.xml')
     with open(filename) as file_:
         html = file_.read()
 
@@ -194,9 +188,6 @@ if __name__ == "__main__":
     parser.add_option("-i", "--interval", dest="interval",
                       default=120,
                       help="number of seconds to sleep between runs")
-    parser.add_option('-o', '--offline', dest='offline',
-                      action='store_true', default=False,
-                      help='run offline (using files in current directory')
     options, args = parser.parse_args()
 
     try:
@@ -205,11 +196,12 @@ if __name__ == "__main__":
         print "Interval *must* be a number, not '", options.interval, "'"
         sys.exit(1)
 
+
     print "Reading data"
-    DATA = initial_read(options.offline)
+    DATA = initial_read()
     while True:
         print "Scraping results"
-        DATA = scrape_results(DATA, options.offline)
+        DATA = scrape_results(DATA)
 
         print "Writing json."
         write_json(DATA)
