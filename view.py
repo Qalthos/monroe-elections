@@ -64,7 +64,7 @@ def area(areatypes, areas, contests):
                     if contest['aid'] == area['id']:
                         text.append("<tr><td><a href='#contest' class='loadC' id='%s'>%s</a></td></tr>\n" %
                                  (contest['id'], contest['nm']))
-        text.append("</table><br/>\n")
+        text.append("</table>\n")
         text.append("</div>\n")
     list_text.append("</ul>\n")
     list_text.extend(text)
