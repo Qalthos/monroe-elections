@@ -38,7 +38,7 @@ BASE_URL = "http://enr.monroecounty.gov/"
 #BASE_URL = "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/"
 #BASE_URL = "http://apps.suffolkcountyny.gov/boe/eleres/12pr/"
 
-BASE_DIR = os.path.abspath('/'.join(__file__.split('/')[:-1]))
+BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 
 def initial_read(offline):
@@ -82,12 +82,13 @@ def pull_file(filename):
     """Pulls a file from a remote source and saves it to the disk."""
     url = "%s%s" % (BASE_URL, filename)
 
-    os.chdir(BASE_DIR + "/data-submodule")
+    filepath = os.path.join(BASE_DIR, "data-submodule")
+    os.chdir(filepath)
     (filename, headers) = urllib.urlretrieve(url, filename)
     commitAll()
     os.chdir(BASE_DIR)
 
-    return BASE_DIR + '/data-submodule/' + filename
+    return os.path.join(filepath, filename)
 
 
 def scrape_results(data, offline):
