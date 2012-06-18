@@ -69,19 +69,16 @@ def write_html(data_dict):
     text = [HEADER]
     text.extend(headers(data_dict['election'], data_dict['areatype']))
     text.append(FOOTER)
-    container_file = open('index.html', 'w')
-    container_file.writelines(text)
-    container_file.close()
+    with open('index.html', 'w') as container_file:
+        container_file.writelines(text)
 
     text = areas(data_dict['areatype'], data_dict['area'], data_dict['contest'])
-    area_file = open("area.html", 'w')
-    area_file.writelines(text)
-    area_file.close()
+    with open("area.html", 'w') as area_file:
+        area_file.writelines(text)
 
     text = write_contests(data_dict['contest'], data_dict['choice'], data_dict['party'])
-    contest_file = open("contest.html", 'w')
-    contest_file.writelines(text)
-    contest_file.close()
+    with open("contest.html", 'w') as contest_file:
+        contest_file.writelines(text)
 
 
 def headers(election, areatypes):
