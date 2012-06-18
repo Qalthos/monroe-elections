@@ -41,6 +41,12 @@ function electionLoad() {
     }
     electionInterval = setInterval(progress, 60000);
     progress();
+
+    // Don't reload another county's results
+    clearInterval(contestInterval);
+    contestInterval = null;
+    $('#area').empty();
+    $('#contest').empty();
     return false;
 }
 
