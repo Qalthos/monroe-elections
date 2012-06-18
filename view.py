@@ -13,6 +13,7 @@ try:
 except ImportError:
     import json
 
+import os
 from operator import itemgetter
 
 BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WOR', 'IND']
@@ -39,18 +40,36 @@ def write_json(data_dict):
 
 def write_html(data_dict):
     """This method gets called to build the HTML for the scraper."""
+    with open('html/tabs.html', 'w') as tab_file:
+        tab_file.writelines(tabs(data_dict.keys()))
 
-    text = update(data_dict['election'], data_dict['areatype'])
-    with open('update.html', 'w') as update_file:
-        update_file.writelines(text)
+    for county, county_data in data_dict.items():
+        output_dir = os.path.join('html', county)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-    text = area(data_dict['areatype'], data_dict['area'], data_dict['contest'])
-    with open("area.html", 'w') as area_file:
-        area_file.writelines(text)
+        text = update(county_data['election'], county_data['areatype'])
+        with open(os.path.join(output_dir, 'update.html'), 'w') as update_file:
+            update_file.writelines(text)
 
-    text = contest(data_dict['contest'], data_dict['choice'], data_dict['party'])
-    with open("contest.html", 'w') as contest_file:
-        contest_file.writelines(text)
+        text = area(county_data['areatype'], county_data['area'],
+                    county_data['contest'])
+        with open(os.path.join(output_dir, "area.html"), 'w') as area_file:
+            area_file.writelines(text)
+
+        text = contest(county_data['contest'], county_data['choice'],
+                       county_data['party'])
+        with open(os.path.join(output_dir, "contest.html"), 'w') as contest_file:
+            contest_file.writelines(text)
+
+
+def tabs(keys):
+    retval = []
+    for key in keys:
+        retval.append("<td align='center'><a href='#' class='loadE' id='%s'>%s</a></td>\n" %
+            (key, key))
+
+    return retval
 
 
 def update(election, areatypes):
