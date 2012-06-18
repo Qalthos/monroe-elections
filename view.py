@@ -47,10 +47,10 @@ def update(election, areatypes):
 
 
 def area(areatypes, areas, contests):
-    list_text = ["<div id='list'>\n<ul style='list-style-type: none'>\n"]
+    list_text = ["<ul id='list' style='list-style-type: none'>\n"]
     text = list()
     for areatype in sort_by_s(areatypes):
-        list_text.append("<li><a href='#' class='loadA' id='%s'>List of %s races</a><li/>\n" %
+        list_text.append("<li><a href='#' class='loadA' id='%s'>List of %s races</a></li>\n" %
             (areatype['id'], areatype['nm']))
         text.append("<div id='a%s'>\n" % areatype['id'])
         text.append("<h3>%s Races</h3>\n" % areatype['nm'])
@@ -66,7 +66,7 @@ def area(areatypes, areas, contests):
                                  (contest['id'], contest['nm']))
         text.append("</table><br/>\n")
         text.append("</div>\n")
-    list_text.append("</ul>\n</div>\n")
+    list_text.append("</ul>\n")
     list_text.extend(text)
     return list_text
 
