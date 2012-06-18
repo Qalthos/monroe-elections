@@ -59,23 +59,28 @@ def initial_read(offline):
         html = file_.read()
 
     soup = BeautifulStoneSoup(html)
+    data = dict()
 
     election = soup.find('election')
-    elect = {'nm': election['nm'], 'des': election['des'], \
+    data['election'] = {'nm': election['nm'], 'des': election['des'], \
       'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
-    areatypes = soup.findAll('areatype')
-    atyp = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
-    areas = soup.findAll('area')
-    area = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
-    contests = soup.findAll('contest')
-    contest = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
-    parties = soup.findAll('party')
-    party = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
-    choices = soup.findAll('choice')
-    choice = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
 
-    return {'election': elect, 'areatype': atyp, 'area': area,
-            'contest': contest, 'choice': choice, 'party': party}
+    areatypes = soup.findAll('areatype')
+    data['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
+
+    areas = soup.findAll('area')
+    data['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
+
+    contests = soup.findAll('contest')
+    data['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
+
+    parties = soup.findAll('party')
+    data['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
+
+    choices = soup.findAll('choice')
+    data['choice'] = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
+
+    return data
 
 
 def pull_file(filename):
