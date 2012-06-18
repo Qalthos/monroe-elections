@@ -1,5 +1,5 @@
 function contestLoad() {
-    var toLoad = 'contest.html #c'+$(this).attr('id');
+    var toLoad = 'contest.html #c' + $(this).attr('id');
     $('#contest').load(toLoad, function(data){
         $(".DEM").children('span').progressBar({ barImage: 'images/progressbg_Democrat.png'} );
         $(".REP").children('span').progressBar({ barImage: 'images/progressbg_Republican.png'} );
@@ -10,7 +10,7 @@ function contestLoad() {
         $(".IND").children('span').progressBar({ barImage: 'images/progressbg_Independence.png'} );
         $(".OTHER").children('span').progressBar({ barImage: 'images/progressbg_Other.png'} );
     });
-    var clicked = $(this)
+    clicked = $(this)
     if (interval != null) {
             clearInterval(interval);
     }
@@ -28,10 +28,14 @@ function areaLoad() {
     return false;
 }
 
+function progress() {
+    $('#progress').load('update.html');
+    $('#list').load('area.html #list');
+}
+
 $(document).ready(function() {
-    setInterval(function() {
-        $('progress').load('index.html #in_progress');
-    }, 60000);
+    progress();
+    setInterval(progress, 60000);
     interval = null;
     $(".loadA").click(areaLoad);
 });
