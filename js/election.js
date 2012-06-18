@@ -1,5 +1,5 @@
 function contestLoad() {
-    var toLoad = 'contest.html #c' + $(this).attr('id');
+    var toLoad = loadPrefix + '/contest.html #c' + $(this).attr('id');
     $('#contest').load(toLoad, function(data){
         $(".DEM").children('span').progressBar({ barImage: 'images/progressbg_Democrat.png'} );
         $(".REP").children('span').progressBar({ barImage: 'images/progressbg_Republican.png'} );
@@ -11,32 +11,43 @@ function contestLoad() {
         $(".OTHER").children('span').progressBar({ barImage: 'images/progressbg_Other.png'} );
     });
     clicked = $(this)
-    if (interval != null) {
-            clearInterval(interval);
+    if(contestInterval != null) {
+            clearInterval(contestInterval);
     }
-    interval = setInterval(function() {
+    contestInterval = setInterval(function() {
             clicked.click()
     }, 60000);
     return false;
 }
 
 function areaLoad() {
-    var toLoad = 'area.html #a'+$(this).attr('id');
+    var toLoad = loadPrefix + '/area.html #a'+$(this).attr('id');
     $('#area').load(toLoad, function(data) {
         $(".loadC").click(contestLoad);
     });
     return false;
 }
 
-function progress() {
-    $('#progress').load('update.html');
-    $('#list').load('area.html #list', function(data) {
-        $(".loadA").click(areaLoad);
-    });
+function electionLoad() {
+    loadPrefix = 'html/' + $(this).attr('id');
+    function progress() {
+        $('#progress').load(loadPrefix + '/update.html');
+        $('#list').load(loadPrefix + '/area.html #list', function(data) {
+            $(".loadA").click(areaLoad);
+        });
+    }
+    if(electionInterval != null) {
+        clearInterval(electionInterval);
+    }
+    electionInterval = setInterval(progress, 60000);
+    progress();
+    return false;
 }
 
 $(document).ready(function() {
-    progress();
-    setInterval(progress, 60000);
-    interval = null;
+    $('#tabs').load('html/tabs.html', function(data) {
+        $(".loadE").click(electionLoad);
+    });
+    contestInterval = null;
+    electionInterval = null;
 });
