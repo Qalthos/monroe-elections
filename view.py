@@ -17,6 +17,19 @@ from operator import itemgetter
 
 BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WOR', 'IND']
 
+def print_tables(data_dict):
+    """
+    Writes out the election information to a readable text table.
+    Exceedingly basic output.
+    """
+
+    for contest in sort_by_s(data_dict['contest']):
+        print("\n%s %s/%s" % (contest['nm'], contest['bal'], contest['el']))
+        for candidate in sort_by_s(data_dict['choice']):
+            if candidate['conid'] == contest['id']:
+                print("%s: %s" % (candidate['nm'], candidate['vot']))
+
+
 def write_json(data_dict):
     json_filename = 'json/' + data_dict['election']['nm']
     json_filename = json_filename.replace(' ', '-') + '.json'

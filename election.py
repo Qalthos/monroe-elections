@@ -154,32 +154,6 @@ def soup_to_dict(soup, key, values, data=None):
     return data
 
 
-def sort_by_s(dict_to_sort):
-    """
-    Takes a dictionary of dictionaries where each inner dictionary has a
-    sort value called s.  The function emits a new list sorted on s of the
-    inner dictionaries.
-
-    """
-
-    return sorted(dict_to_sort.values(), key=itemgetter('s'))
-
-# Output Methods
-def print_tables(data_dict):
-    """
-    Writes out the election information to a readable text table.
-    Exceedingly basic output.
-
-    """
-
-    for contest in sort_by_s(data_dict['contest']):
-        print("\n%s %s/%s" % (contest['nm'], contest['bal'], contest['el']))
-        for candidate in sort_by_s(data_dict['choice']):
-            if candidate['conid'] == contest['id']:
-                print("%s: %s" % (candidate['nm'], candidate['vot']))
-
-
-
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-l", "--loop", dest="loop",
