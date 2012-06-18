@@ -135,8 +135,8 @@ def contest(contests, choices, parties):
                 party_list = sorted(choice['vot'], key=lambda pid: parties[pid]['s'])
                 for party in party_list:
                     party_class = 'OTHER'
-                    if parties[party]['ab'] in BAR_TYPES:
-                        party_class = parties[party]['ab']
+                    if parties[party]['ab'].upper() in BAR_TYPES:
+                        party_class = parties[party]['ab'].upper()
                     text.append("<tr><td colspan=2/><td>%s</td><td class='%s'><span class='progressBar'>%s%%</span></td></tr>\n" %
                              (parties[party]['nm'], party_class, choice['vot'][party]/total_ballots))
         text.append("<tr><td/><td colspan=2>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
