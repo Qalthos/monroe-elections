@@ -15,7 +15,7 @@
 #
 # Author: Nathaniel Case
 #         Ralph Bean -- http://threebean.org
-# 	  Beau Bouchard -- http://beaubouchard.com
+#         Beau Bouchard -- http://beaubouchard.com
 
 import optparse
 import os
