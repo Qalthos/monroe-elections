@@ -123,8 +123,8 @@ def contest(contests, choices, parties):
                     single_line = choice['vot'].popitem()
                     pid = single_line[0]
                     party_class = 'OTHER'
-                    if parties[pid]['ab'] in BAR_TYPES:
-                        party_class = parties[pid]['ab']
+                    if parties[pid]['ab'].upper() in BAR_TYPES:
+                        party_class = parties[pid]['ab'].upper()
                     text.append("<tr><td>%s</td><td>%s</td><td>%s</td><td class='%s'><span class='progressBar'>%s%%</span></td></tr>\n" %
                             (winner, choice['nm'], parties[pid]['nm'],
                              party_class, single_line[1]/total_ballots))
