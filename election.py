@@ -110,11 +110,6 @@ def initial_read(county):
     for atid in dropped_atids:
         del data['areatype'][atid]
 
-    print(seen_aids)
-    print(dropped_aids)
-    print(seen_atids)
-    print(dropped_atids)
-
     parties = soup.findAll('party')
     data['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
 
