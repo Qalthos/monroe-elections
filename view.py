@@ -41,7 +41,7 @@ def write_json(data_dict):
 def write_html(data_dict):
     """This method gets called to build the HTML for the scraper."""
     with open('html/tabs.html', 'w') as tab_file:
-        tab_file.writelines(tabs(data_dict.keys()))
+        tab_file.writelines(tabs(data_dict))
 
     for county, county_data in data_dict.items():
         output_dir = os.path.join('html', county)
@@ -63,11 +63,11 @@ def write_html(data_dict):
             contest_file.writelines(text)
 
 
-def tabs(keys):
+def tabs(data):
     retval = []
-    for key in keys:
+    for key in data:
         retval.append("<td align='center'><a href='#' class='loadE' id='%s'>%s</a></td>\n" %
-            (key, key))
+            (key, data[key]['election']['nm']))
 
     return retval
 
