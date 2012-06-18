@@ -113,30 +113,31 @@ def scrape_results(county, data):
     soup = BeautifulStoneSoup(html)
 
     election = soup.find('results')
-    data['election'].update({'pol': election['pol'],
-                             'clpol': election['clpol'], 'ts': election['ts'],
-                             'fin': election['fin']})
-    areas = soup.findAll('area')
-    area = soup_to_dict(areas, 'id', ['bal', 'vot', 'pol', 'clpol'],
-                        data['area'])
-    contests = soup.findAll('contest')
-    cont = soup_to_dict(contests, 'id', ['bal', 'bl', 'uv', 'ov'],
-                        data['contest'])
-    choices = soup.findAll('choice')
-    cand = soup_to_dict(choices, 'id', ['vot', 'e'], data['choice'])
+    data['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
+                             'pol': election['pol'], 'fin': election['fin']})
 
-    return {'election': data['election'], 'areatype': data['areatype'],
-            'area': area, 'contest': cont, 'choice': cand, 'party': data['party']}
+    results = soup_to_dict(soup.findAll('area'), 'id', ['bal', 'vot', 'pol', 'clpol'])
+    for id_ in results:
+        data['area'][id_].update(results[id_])
+
+    results = soup_to_dict(soup.findAll('contest'), 'id', ['bal', 'bl', 'uv', 'ov'])
+    for id_ in results:
+        data['contest'][id_].update(results[id_])
+
+    results = soup_to_dict(soup.findAll('choice'), 'id', ['vot', 'e'])
+    for id_ in results:
+        data['choice'][id_].update(results[id_])
+
+    return data
 
 
-def soup_to_dict(soup, key, values, data=None):
+def soup_to_dict(soup, key, values):
     """
     Reads a bunch of attributes form an XML tag and puts them into a dict.
 
     """
 
-    if not data:
-        data = {}
+    data = dict()
     for item in soup:
         if not data.get(item[key]):
             data[item[key]] = {}
