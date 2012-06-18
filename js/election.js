@@ -30,12 +30,13 @@ function areaLoad() {
 
 function progress() {
     $('#progress').load('update.html');
-    $('#list').load('area.html #list');
+    $('#list').load('area.html #list', function(data) {
+        $(".loadA").click(areaLoad);
+    });
 }
 
 $(document).ready(function() {
     progress();
     setInterval(progress, 60000);
     interval = null;
-    $(".loadA").click(areaLoad);
 });
