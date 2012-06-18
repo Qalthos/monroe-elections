@@ -31,17 +31,35 @@ from view import write_html, write_json
 #BASE_URL = "http://www.london.ca/elections/results/"
 #BASE_URL = "http://city.waterloo.on.ca/election2010/"
 #BASE_URL = "http://guelph.ca/vote/uploads/results/"
-BASE_URL = "http://enr.monroecounty.gov/"
 
-# These have election-specific directories.  In these examples, the 2012
-# Republican Presidential Primary
-#BASE_URL = "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/"
-#BASE_URL = "http://apps.suffolkcountyny.gov/boe/eleres/12pr/"
+BASE_URLS = {
+    'Monroe': "http://enr.monroecounty.gov/",
+    'Suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12pr/",
+    'Chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/",
+}
 
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 
-def initial_read():
+def pull_file(county, filename):
+    """Pulls a file from a remote source and saves it to the disk."""
+    url = "%s%s" % (BASE_URLS[county], filename)
+
+    filepath = os.path.join(BASE_DIR, "data-submodule", county)
+
+    # Create directory if necessary
+    if not os.path.exists(filepath):
+        os.mkdir(filepath)
+
+    os.chdir(filepath)
+    (filename, headers) = urllib.urlretrieve(url, filename)
+    commitAll()
+    os.chdir(BASE_DIR)
+
+    return os.path.join(filepath, filename)
+
+
+def initial_read(county):
     """
     Reads the contents of ElectionEvent.xml.
     This file should not change during the election, so should only need to be
@@ -51,7 +69,7 @@ def initial_read():
 
     """
 
-    filename = pull_file('ElectionEvent.xml')
+    filename = pull_file(county, 'ElectionEvent.xml')
     with open(filename) as file_:
         html = file_.read()
 
@@ -80,20 +98,7 @@ def initial_read():
     return data
 
 
-def pull_file(filename):
-    """Pulls a file from a remote source and saves it to the disk."""
-    url = "%s%s" % (BASE_URL, filename)
-
-    filepath = os.path.join(BASE_DIR, "data-submodule")
-    os.chdir(filepath)
-    (filename, headers) = urllib.urlretrieve(url, filename)
-    commitAll()
-    os.chdir(BASE_DIR)
-
-    return os.path.join(filepath, filename)
-
-
-def scrape_results(data):
+def scrape_results(county, data):
     """
     Reads the contents of results.xml.
     This is the file that has all the changing information, so this is the
@@ -101,7 +106,7 @@ def scrape_results(data):
 
     """
 
-    filename = pull_file('results.xml')
+    filename = pull_file(county, 'results.xml')
     with open(filename) as file_:
         html = file_.read()
 
@@ -172,10 +177,13 @@ if __name__ == "__main__":
 
 
     print "Reading data"
-    DATA = initial_read()
+    DATA = dict()
+    for county in BASE_URLS:
+        DATA[county] = initial_read(county)
     while True:
-        print "Scraping results"
-        DATA = scrape_results(DATA)
+        for county in BASE_URLS:
+            print("Scraping results for %s county" % county)
+            DATA[county] = scrape_results(county, DATA[county])
 
         print "Writing json."
         write_json(DATA)
