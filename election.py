@@ -19,7 +19,6 @@
 
 import optparse
 import os
-import sys
 from time import sleep
 import urllib
 
