@@ -200,8 +200,8 @@ if __name__ == "__main__":
             print("Scraping results for %s county" % county)
             DATA[county] = scrape_results(county, DATA[county])
 
-        #print "Writing json."
-        #write_json(DATA)
+        print "Writing json."
+        write_json(DATA)
 
         print "Writing file(s)."
         write_html(DATA)
