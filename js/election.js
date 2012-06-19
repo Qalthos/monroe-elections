@@ -40,6 +40,7 @@ function electionLoad() {
     electionInterval = setInterval(progress, 60000);
     progress();
 
+    //Switch active tabs
     if(activeTab != null) {
         activeTab.removeClass('active');
     }
@@ -62,9 +63,12 @@ function clickLoad(element, fn) {
 }
 
 $(document).ready(function() {
+    // Populate the tab bar
     $('#tabs').load('html/tabs.html', function(data) {
         clickLoad(".loadE", electionLoad);
     });
+
+    // Set up global variables to help with state
     activeTab = null;
     contestInterval = null;
     electionInterval = null;
