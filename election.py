@@ -190,10 +190,11 @@ if __name__ == "__main__":
                       help="number of seconds to sleep between runs")
     options, args = parser.parse_args()
 
-    print "Reading data"
     DATA = dict()
     for county in BASE_URLS:
+        print("Reading data for %s" % county)
         DATA[county] = initial_read(county)
+
     while True:
         for county in BASE_URLS:
             print("Scraping results for %s county" % county)
