@@ -14,9 +14,7 @@ function contestLoad() {
     if(contestInterval != null) {
             clearInterval(contestInterval);
     }
-    contestInterval = setInterval(function() {
-            clicked.click()
-    }, 60000);
+    contestInterval = setInterval(clicked.click, 60000);
     return false;
 }
 
