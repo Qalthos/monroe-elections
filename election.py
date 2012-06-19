@@ -28,11 +28,6 @@ from BeautifulSoup import BeautifulStoneSoup
 from gitsupport import commitAll
 from view import write_html, write_json
 
-# A few known sources of valid XML files
-#BASE_URL = "http://www.london.ca/elections/results/"
-#BASE_URL = "http://city.waterloo.on.ca/election2010/"
-#BASE_URL = "http://guelph.ca/vote/uploads/results/"
-
 BASE_URLS = {
     'Monroe': "http://enr.monroecounty.gov/",
     'Suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12pr/",
