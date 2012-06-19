@@ -42,6 +42,12 @@ function electionLoad() {
     electionInterval = setInterval(progress, 60000);
     progress();
 
+    if(activeTab != null) {
+        activeTab.removeClass('active');
+    }
+    activeTab = $(this).parent();
+    activeTab.addClass('active');
+
     // Don't reload another county's results
     clearInterval(contestInterval);
     contestInterval = null;
@@ -54,6 +60,7 @@ $(document).ready(function() {
     $('#tabs').load('html/tabs.html', function(data) {
         $(".loadE").click(electionLoad);
     });
+    activeTab = null;
     contestInterval = null;
     electionInterval = null;
 });
