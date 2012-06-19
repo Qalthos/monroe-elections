@@ -23,7 +23,7 @@ function contestLoad() {
 function areaLoad() {
     var toLoad = loadPrefix + '/area.html #a'+$(this).attr('id');
     $('#area').load(toLoad, function(data) {
-        $(".loadC").click(contestLoad);
+        clickLoad(".loadC", contestLoad);
     });
     return false;
 }
@@ -33,7 +33,7 @@ function electionLoad() {
     function progress() {
         $('#progress').load(loadPrefix + '/update.html');
         $('#list').load(loadPrefix + '/area.html #list', function(data) {
-            $(".loadA").click(areaLoad);
+            clickLoad(".loadA", areaLoad);
         });
     }
     if(electionInterval != null) {
@@ -56,9 +56,16 @@ function electionLoad() {
     return false;
 }
 
+function clickLoad(element, fn) {
+    $(element).click(fn);
+    if($(element).length == 1) {
+        $(element).click();
+    }
+}
+
 $(document).ready(function() {
     $('#tabs').load('html/tabs.html', function(data) {
-        $(".loadE").click(electionLoad);
+        clickLoad(".loadE", electionLoad);
     });
     activeTab = null;
     contestInterval = null;
