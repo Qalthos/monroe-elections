@@ -28,9 +28,9 @@ from gitsupport import commitAll
 from view import write_html, write_json
 
 BASE_URLS = {
-    'Monroe': "http://enr.monroecounty.gov/",
-    'Suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12pr/",
-    'Chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/",
+    'monroe': "http://enr.monroecounty.gov/",
+    'suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12pr/",
+    'chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20Presidential%20Primary/",
 }
 
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
