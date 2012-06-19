@@ -57,3 +57,13 @@ img.foss-logo {
         height: 48px;
         margin-right: 32px;
 }
+
+ul {
+        list-style-type: none;
+        padding: 0;
+}
+
+.tab {
+        display: inline;
+        padding: 0 35px;
+}

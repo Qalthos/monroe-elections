@@ -67,7 +67,7 @@ def write_html(data_dict):
 def tabs(data):
     retval = []
     for key in data:
-        retval.append("<td align='center'><a href='#' class='loadE' id='%s'>%s</a></td>\n" %
+        retval.append("<li class='tab'><a href='#' class='loadE' id='%s'>%s</a></li>\n" %
             (key, data[key]['election']['nm']))
 
     return retval
@@ -80,9 +80,10 @@ def update(election, areatypes):
 
 
 def area(areatypes, areas, contests):
-    list_text = ["<ul id='list' style='list-style-type: none'>\n"]
+    list_text = ["<ul id='list'>\n"]
     text = list()
     for areatype in sort_by_s(areatypes):
+
         list_text.append("<li><a href='#' class='loadA' id='%s'>List of %s races</a></li>\n" %
             (areatype['id'], areatype['nm']))
         text.append("<div id='a%s'>\n" % areatype['id'])
@@ -95,7 +96,7 @@ def area(areatypes, areas, contests):
                              (area['nm']))
                 for contest in sort_by_s(contests):
                     if contest['aid'] == area['id']:
-                        text.append("<tr><td><a href='#contest' class='loadC' id='%s'>%s</a></td></tr>\n" %
+                        text.append("<tr><td><a href='#' class='loadC' id='%s'>%s</a></td></tr>\n" %
                                  (contest['id'], contest['nm']))
         text.append("</table>\n")
         text.append("</div>\n")
