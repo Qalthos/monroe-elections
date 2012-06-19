@@ -32,11 +32,12 @@ def print_tables(data_dict):
 
 
 def write_json(data_dict):
-    json_filename = 'json/' + data_dict['election']['nm']
-    json_filename = json_filename.replace(' ', '-') + '.json'
+    for election in data_dict.values():
+        json_filename = 'json/' + election['election']['nm']
+        json_filename = json_filename.replace(' ', '-') + '.json'
 
-    with open(json_filename, 'w') as f:
-        f.write(json.dumps(data_dict))
+        with open(json_filename, 'w') as f:
+            f.write(json.dumps(election))
 
 def write_html(data_dict):
     """This method gets called to build the HTML for the scraper."""
