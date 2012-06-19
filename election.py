@@ -191,16 +191,9 @@ if __name__ == "__main__":
                       action="store_true", default=False,
                       help="run in a loop (infinitely)")
     parser.add_option("-i", "--interval", dest="interval",
-                      default=120,
+                      default=120, type='float',
                       help="number of seconds to sleep between runs")
     options, args = parser.parse_args()
-
-    try:
-        float(options.interval)
-    except TypeError as e:
-        print "Interval *must* be a number, not '", options.interval, "'"
-        sys.exit(1)
-
 
     print "Reading data"
     DATA = dict()
@@ -221,4 +214,4 @@ if __name__ == "__main__":
             break
 
         print "Sleeping for", options.interval, "seconds"
-        sleep(float(options.interval))
+        sleep(options.interval)
