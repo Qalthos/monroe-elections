@@ -1,15 +1,21 @@
 import os
 import subprocess
 
-def commitAll():
-    cmd = 'git add *; git commit -a -m "Latest update"'
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.getcwd())
-    pipe.wait()
+from threading import Lock
 
-def commitFile(file_name):
-    cmd = 'git add %s; git commit -m "Latest update"' % file_name
-    pipe = subprocess.Popen(cmd, shell=True, cwd=os.getcwd())
-    pipe.wait()
+GIT_LOCK = Lock()
+
+def commitAll(path=os.getcwd(), msg="Latest update"):
+    with GIT_LOCK:
+        cmd = 'git add *; git commit -a -m "%s"' % msg
+        pipe = subprocess.Popen(cmd, shell=True, cwd=path)
+        pipe.wait()
+
+def commitFile(file_name, path=os.getcwd(), msg="Latest update"):
+    with GIT_LOCK:
+        cmd = 'git add %s; git commit -m "%s"' % (file_name, path)
+        pipe = subprocess.Popen(cmd, shell=True, cwd=path)
+        pipe.wait()
 
 def commit(fn):
     def git(filename):
