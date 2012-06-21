@@ -24,6 +24,9 @@ import urllib
 
 from BeautifulSoup import BeautifulStoneSoup
 
+from twisted.internet import reactor, threads
+from twisted.internet.task import LoopingCall
+
 from gitsupport import commitAll
 from view import write_html, write_json
 
@@ -36,118 +39,113 @@ BASE_URLS = {
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 
-def pull_file(county, filename):
-    """Pulls a file from a remote source and saves it to the disk."""
-    url = "%s%s" % (BASE_URLS[county], filename)
+class Election(object):
+    def __init__(self, county):
+        self.county = county
+        self.results = dict()
+        self.filepath = os.path.join(BASE_DIR, "data-submodule", self.county)
 
-    filepath = os.path.join(BASE_DIR, "data-submodule", county)
+        # Create storage directory if necessary
+        if not os.path.exists(self.filepath):
+            os.mkdir(self.filepath)
 
-    # Create directory if necessary
-    if not os.path.exists(filepath):
-        os.mkdir(filepath)
+    def initial_read(self):
+        """
+        Reads the contents of ElectionEvent.xml.
+        This file should not change during the election, so should only need to be
+        read once.
 
-    os.chdir(filepath)
-    (filename, headers) = urllib.urlretrieve(url, filename)
-    commitAll()
-    os.chdir(BASE_DIR)
+        In case results are not yet available, it also zeroes out data.
 
-    return os.path.join(filepath, filename)
+        """
 
+        filename = self.pull_file('ElectionEvent.xml')
+        with open(filename) as file_:
+            html = file_.read()
 
-def initial_read(county):
-    """
-    Reads the contents of ElectionEvent.xml.
-    This file should not change during the election, so should only need to be
-    read once.
+        soup = BeautifulStoneSoup(html)
 
-    In case results are not yet available, it also zeroes out data.
+        election = soup.find('election')
+        self.results['election'] = {'nm': election['nm'], 'des': election['des'], \
+            'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
 
-    """
+        contests = soup.findAll('contest')
+        self.results['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
+        seen_aids = set()
+        for contest in self.results['contest'].values():
+            seen_aids.add(contest['aid'])
 
-    filename = pull_file(county, 'ElectionEvent.xml')
-    with open(filename) as file_:
-        html = file_.read()
+        areas = soup.findAll('area')
+        self.results['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
+        seen_atids = set()
+        dropped_aids = set()
+        for aid, area in self.results['area'].items():
+            if aid not in seen_aids:
+                # No contest is attached to this area, so we can ignore it
+                dropped_aids.add(aid)
+            else:
+                seen_atids.add(area['atid'])
+        for aid in dropped_aids:
+            del self.results['area'][aid]
 
-    soup = BeautifulStoneSoup(html)
-    data = dict()
+        areatypes = soup.findAll('areatype')
+        self.results['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
+        dropped_atids = set()
+        for atid in self.results['areatype']:
+            if atid not in seen_atids:
+                # No areas attached to an areatype?  Drop those too.
+                dropped_atids.add(atid)
+        for atid in dropped_atids:
+            del self.results['areatype'][atid]
 
-    election = soup.find('election')
-    data['election'] = {'nm': election['nm'], 'des': election['des'], \
-      'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
+        parties = soup.findAll('party')
+        self.results['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
 
-    contests = soup.findAll('contest')
-    data['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
-    seen_aids = set()
-    for contest in data['contest'].values():
-        seen_aids.add(contest['aid'])
+        choices = soup.findAll('choice')
+        self.results['choice'] = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
 
-    areas = soup.findAll('area')
-    data['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
-    seen_atids = set()
-    dropped_aids = set()
-    for aid, area in data['area'].items():
-        if aid not in seen_aids:
-            # No contest is attached to this area, so we can ignore it
-            dropped_aids.add(aid)
-        else:
-            seen_atids.add(area['atid'])
-    for aid in dropped_aids:
-        del data['area'][aid]
+    def scrape_results(self):
+        """
+        Reads the contents of results.xml.
+        This is the file that has all the changing information, so this is the
+        method that should get run to update the values.
 
-    areatypes = soup.findAll('areatype')
-    data['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
-    dropped_atids = set()
-    for atid in data['areatype']:
-        if atid not in seen_atids:
-            # No areas attached to an areatype?  Drop those too.
-            dropped_atids.add(atid)
-    for atid in dropped_atids:
-        del data['areatype'][atid]
+        """
 
-    parties = soup.findAll('party')
-    data['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
+        filename = self.pull_file('results.xml')
+        with open(filename) as file_:
+            html = file_.read()
 
-    choices = soup.findAll('choice')
-    data['choice'] = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
+        soup = BeautifulStoneSoup(html)
 
-    return data
+        election = soup.find('results')
+        self.results['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
+                                 'pol': election['pol'], 'fin': election['fin']})
 
+        results = soup_to_dict(soup.findAll('area'), 'id', ['bal', 'vot', 'pol', 'clpol'])
+        for id_ in results:
+            try:
+                self.results['area'][id_].update(results[id_])
+            except KeyError:
+                # We probably dropped it, so ignore.
+                pass
 
-def scrape_results(county, data):
-    """
-    Reads the contents of results.xml.
-    This is the file that has all the changing information, so this is the
-    method that should get run to update the values.
+        results = soup_to_dict(soup.findAll('contest'), 'id', ['bal', 'bl', 'uv', 'ov'])
+        for id_ in results:
+            self.results['contest'][id_].update(results[id_])
 
-    """
+        results = soup_to_dict(soup.findAll('choice'), 'id', ['vot', 'e'])
+        for id_ in results:
+            self.results['choice'][id_].update(results[id_])
 
-    filename = pull_file(county, 'results.xml')
-    with open(filename) as file_:
-        html = file_.read()
+    def pull_file(self, filename):
+        """Pulls a file from a remote source and saves it to the disk."""
+        url = "%s%s" % (BASE_URLS[self.county], filename)
 
-    soup = BeautifulStoneSoup(html)
+        (filename, headers) = urllib.urlretrieve(url, filename)
+        commitAll(self.filepath)
 
-    election = soup.find('results')
-    data['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
-                             'pol': election['pol'], 'fin': election['fin']})
-
-    results = soup_to_dict(soup.findAll('area'), 'id', ['bal', 'vot', 'pol', 'clpol'])
-    for id_ in results:
-        try:
-            data['area'][id_].update(results[id_])
-        except KeyError:
-            # We probably dropped it, so ignore.
-            pass
-
-    results = soup_to_dict(soup.findAll('contest'), 'id', ['bal', 'bl', 'uv', 'ov'])
-    for id_ in results:
-        data['contest'][id_].update(results[id_])
-
-    results = soup_to_dict(soup.findAll('choice'), 'id', ['vot', 'e'])
-    for id_ in results:
-        data['choice'][id_].update(results[id_])
-
-    return data
+        return os.path.join(self.filepath, filename)
 
 
 def soup_to_dict(soup, key, values):
@@ -179,6 +177,17 @@ def soup_to_dict(soup, key, values):
     return data
 
 
+def scrape(election):
+    print("Scraping results for %s county" % election.county)
+    election.scrape_results()
+
+    print "Writing json."
+    write_json(election.county, election.results)
+
+    print "Writing file(s)."
+    write_html(election.county, election.results)
+
+
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-l", "--loop", dest="loop",
@@ -189,24 +198,16 @@ if __name__ == "__main__":
                       help="number of seconds to sleep between runs")
     options, args = parser.parse_args()
 
-    DATA = dict()
+    results = dict()
     for county in BASE_URLS:
+        e = Election(county)
+        results[county] = e
+
         print("Reading data for %s" % county)
-        DATA[county] = initial_read(county)
+        d = threads.deferToThread(e.initial_read)
 
-    while True:
-        for county in BASE_URLS:
-            print("Scraping results for %s county" % county)
-            DATA[county] = scrape_results(county, DATA[county])
+        if options.loop:
+            lc = LoopingCall(scrape, [e])
+            d.addCallBack(lc.start(options.interval, True))
 
-        print "Writing json."
-        write_json(DATA)
-
-        print "Writing file(s)."
-        write_html(DATA)
-
-        if not options.loop:
-            break
-
-        print "Sleeping for", options.interval, "seconds"
-        sleep(options.interval)
+    reactor.run()
