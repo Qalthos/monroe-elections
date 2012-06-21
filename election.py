@@ -28,7 +28,7 @@ from twisted.internet import reactor, threads
 from twisted.internet.task import LoopingCall
 
 from gitsupport import commitAll
-from view import write_html, write_json
+from view import write_html, write_json, tabs, clear_tabs
 
 BASE_URLS = {
     'monroe': "http://enr.monroecounty.gov/",
@@ -103,6 +103,10 @@ class Election(object):
 
         choices = soup.findAll('choice')
         self.results['choice'] = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
+
+        tabs(self.county, self.results['election']['nm'])
+
+        return self
 
     def scrape_results(self):
         """
@@ -199,6 +203,7 @@ if __name__ == "__main__":
     options, args = parser.parse_args()
 
     results = dict()
+    clear_tabs()
     for county in BASE_URLS:
         e = Election(county)
         results[county] = e

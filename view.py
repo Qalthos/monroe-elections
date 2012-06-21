@@ -60,14 +60,15 @@ def write_html(county, county_data):
         contest_file.writelines(text)
 
 
+def tabs(key, name):
+    with open('html/tabs.html', 'a') as tab_file:
+        tab_file.write("<li class='tab'><a href='#' class='loadE' id='%s'>%s</a></li>\n" %
+            (key, name))
 
-def tabs(data):
-    retval = []
-    for key in data:
-        retval.append("<li class='tab'><a href='#' class='loadE' id='%s'>%s</a></li>\n" %
-            (key, data[key]['election']['nm']))
 
-    return retval
+def clear_tabs():
+    with open('html/tabs.html', 'w') as tab_file:
+        tab_file.write("")
 
 
 def update(election, areatypes):
