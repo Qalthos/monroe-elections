@@ -211,8 +211,12 @@ if __name__ == "__main__":
         print("Reading data for %s" % county)
         d = threads.deferToThread(e.initial_read)
 
-        if options.loop:
-            lc = LoopingCall(scrape, [e])
-            d.addCallBack(lc.start(options.interval, True))
+        def loopOrNot(election):
+            if options.loop:
+                LoopingCall(scrape, election).start(options.interval, True)
+            else:
+                scrape(election)
+
+        d.addCallback(loopOrNot)
 
     reactor.run()
