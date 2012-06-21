@@ -31,37 +31,34 @@ def print_tables(data_dict):
                 print("%s: %s" % (candidate['nm'], candidate['vot']))
 
 
-def write_json(data_dict):
-    for election in data_dict.values():
-        json_filename = 'json/' + election['election']['nm']
-        json_filename = json_filename.replace(' ', '-') + '.json'
+def write_json(election):
+    json_filename = 'json/' + election['election']['nm']
+    json_filename = json_filename.replace(' ', '-') + '.json'
 
-        with open(json_filename, 'w') as f:
-            f.write(json.dumps(election))
+    with open(json_filename, 'w') as f:
+        f.write(json.dumps(election))
 
-def write_html(data_dict):
+def write_html(county, county_data):
     """This method gets called to build the HTML for the scraper."""
-    with open('html/tabs.html', 'w') as tab_file:
-        tab_file.writelines(tabs(data_dict))
 
-    for county, county_data in data_dict.items():
-        output_dir = os.path.join('html', county)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+    output_dir = os.path.join('html', county)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-        text = update(county_data['election'], county_data['areatype'])
-        with open(os.path.join(output_dir, 'update.html'), 'w') as update_file:
-            update_file.writelines(text)
+    text = update(county_data['election'], county_data['areatype'])
+    with open(os.path.join(output_dir, 'update.html'), 'w') as update_file:
+        update_file.writelines(text)
 
-        text = area(county_data['areatype'], county_data['area'],
-                    county_data['contest'])
-        with open(os.path.join(output_dir, "area.html"), 'w') as area_file:
-            area_file.writelines(text)
+    text = area(county_data['areatype'], county_data['area'],
+                county_data['contest'])
+    with open(os.path.join(output_dir, "area.html"), 'w') as area_file:
+        area_file.writelines(text)
 
-        text = contest(county_data['contest'], county_data['choice'],
-                       county_data['party'])
-        with open(os.path.join(output_dir, "contest.html"), 'w') as contest_file:
-            contest_file.writelines(text)
+    text = contest(county_data['contest'], county_data['choice'],
+                   county_data['party'])
+    with open(os.path.join(output_dir, "contest.html"), 'w') as contest_file:
+        contest_file.writelines(text)
+
 
 
 def tabs(data):

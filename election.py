@@ -182,7 +182,7 @@ def scrape(election):
     election.scrape_results()
 
     print "Writing json."
-    write_json(election.county, election.results)
+    write_json(election.results)
 
     print "Writing file(s)."
     write_html(election.county, election.results)
