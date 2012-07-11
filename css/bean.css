@@ -76,3 +76,11 @@ ul {
         border-bottom: 0;
         border-style: solid;
 }
+
+#list {
+        width: 50%;
+}
+
+#area {
+        width: 30%;
+}

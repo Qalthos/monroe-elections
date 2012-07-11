@@ -109,7 +109,7 @@ def contest(contests, choices, parties):
         if contest['bal'] == 0:
             contest['bal'] = 1
         text.append("<div id='c%s'>\n" % contest['id'])
-        text.append("<table width='100%'>\n")
+        text.append("<table>\n")
         text.append("<tr><th colspan=5>%s</th></tr>\n" % contest['nm'])
         total_ballots = contest['bal']/100.0
         for choice in sort_by_s(choices):
