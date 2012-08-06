@@ -84,21 +84,42 @@ ul {
 progress.CON::-moz-progress-bar {
     //background-color: //???
 }
+progress.CON::-webkit-progress-value {
+    //background-color: //???
+}
 progress.DEM::-moz-progress-bar {
     background-color: blue;
+}
+progress.DEM::-webkit-progress-value {
+    //background-color: //???
 }
 progress.GRN::-moz-progress-bar {
     background-color: green;
 }
+progress.GRN::-webkit-progress-value {
+    //background-color: //???
+}
 progress.IND::-moz-progress-bar {
     //background-color: //???;
+}
+progress.IND::-webkit-progress-value {
+    //background-color: //???
 }
 progress.LIB::-moz-progress-bar {
     //background-color: //???;
 }
+progress.LIB::-webkit-progress-value {
+    //background-color: //???
+}
 progress.REP::-moz-progress-bar {
     background-color: red;
 }
+progress.REP::-webkit-progress-value {
+    //background-color: //???
+}
 progress.WOR::-moz-progress-bar {
     //background-color: //blue and white;
+}
+progress.WOR::-webkit-progress-value {
+    //background-color: //???
 }
