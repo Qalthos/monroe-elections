@@ -1,6 +1,0 @@
-.barwrap { margin: 0px auto;  width: 300px; height:100%;}
-
-/** 6699CC = blue, CC0000 = red, #33CC33 = indie, green **/
-#barDem 	{ width:100%; background-color: #6699CC; }
-#barRep 	{ width:100%; background-color: #CC0000; }
-#barIndie 	{ width:100%; background-color: #33CC33; }
