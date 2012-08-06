@@ -1,9 +1,7 @@
 /*
-
 green   #680
 dark    #333
 lighter #666
-
 */
 @font-face {
   font-family: 'GothicCustom';
@@ -82,7 +80,7 @@ ul {
         width: 30%;
 }
 
-// Set the color of the unfilled part of the progress bar
+/* Set the color of the unfilled part of the progress bar */
 progress {
     background-color: #BBBBBB;
     border: 1px solid #333333;
@@ -91,13 +89,7 @@ progress::-webkit-progress-bar {
     background-color: #BBBBBB;
 }
 
-// Set the color of the filled part of the progress bar.
-progress.CON::-moz-progress-bar {
-    //background-color: //???
-}
-progress.CON::-webkit-progress-value {
-    //background-color: //???
-}
+/* Set the color of the filled part of the progress bar */
 progress.DEM::-moz-progress-bar {
     background-color: blue;
 }
@@ -110,27 +102,33 @@ progress.GRN::-moz-progress-bar {
 progress.GRN::-webkit-progress-value {
     background-color: green;
 }
-progress.IND::-moz-progress-bar {
-    //background-color: //???;
-}
-progress.IND::-webkit-progress-value {
-    //background-color: //???;
-}
-progress.LIB::-moz-progress-bar {
-    //background-color: //???;
-}
-progress.LIB::-webkit-progress-value {
-    //background-color: //???;
-}
 progress.REP::-moz-progress-bar {
     background-color: red;
 }
 progress.REP::-webkit-progress-value {
     background-color: red;
 }
+/*progress.CON::-moz-progress-bar {
+    background-color: ???;
+}
+progress.CON::-webkit-progress-value {
+    background-color: ???;
+}
+progress.IND::-moz-progress-bar {
+    background-color: ???;
+}
+progress.IND::-webkit-progress-value {
+    background-color: ???;
+}
+progress.LIB::-moz-progress-bar {
+    background-color: ???;
+}
+progress.LIB::-webkit-progress-value {
+    background-color: ???;
+}
 progress.WOR::-moz-progress-bar {
-    //background-color: //blue and white;
+    background-color: blue and white;
 }
 progress.WOR::-webkit-progress-value {
-    //background-color: //blue and white;
-}
+    background-color: blue and white;
+}*/
