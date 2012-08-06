@@ -82,6 +82,16 @@ ul {
         width: 30%;
 }
 
+// Set the color of the unfilled part of the progress bar
+progress {
+    background-color: #BBBBBB;
+    border: 1px solid #333333;
+}
+progress::-webkit-progress-bar {
+    background-color: #BBBBBB;
+}
+
+// Set the color of the filled part of the progress bar.
 progress.CON::-moz-progress-bar {
     //background-color: //???
 }
