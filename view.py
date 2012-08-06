@@ -118,31 +118,33 @@ def contest(contests, choices, parties):
                     winner = "*"
                 else:
                     winner = ""
+
+                party_class = 'OTHER'
+
                 if len(choice['vot']) == 2:
+                    # Get rid of 'tot' so we don't get confused
                     choice['vot'].pop('tot')
                     single_line = choice['vot'].popitem()
                     pid = single_line[0]
-                    party_class = 'OTHER'
                     if parties[pid]['ab'].upper() in BAR_TYPES:
                         party_class = parties[pid]['ab'].upper()
-                    text.append("<tr><td>%s</td><td>%s</td><td>%s</td><td class='%s'><span class='progressBar'>%s%%</span></td><td>%d</td></tr>\n" %
-                            (winner, choice['nm'], parties[pid]['nm'],
-                             party_class, single_line[1]/total_ballots,
-                             single_line[1]))
+                    total = single_line[1]
+                    party = parties[pid]['nm']
                 else:
                     total = choice['vot'].pop('tot')
-                    text.append("<tr><td>%s</td><td>%s</td><td>%s</td><td class='OTHER'><span class='progressBar'>%s%%</span></td><td>%d</td></tr>\n" %
-                            (winner, choice['nm'], "Total",
-                             total/total_ballots, total))
+                    party = "Total"
+                text.append("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td><progress class='{3}' value={4} max=100 /> {4:.0f}%</td><td>{5}</td></tr>\n" \
+                            .format(winner, choice['nm'], party, party_class,
+                                    total/total_ballots, total))
                 party_list = sorted(choice['vot'], key=lambda pid: parties[pid]['s'])
                 for party in party_list:
                     party_class = 'OTHER'
                     if parties[party]['ab'].upper() in BAR_TYPES:
                         party_class = parties[party]['ab'].upper()
-                    text.append("<tr><td colspan=2/><td>%s</td><td class='%s'><span class='progressBar'>%s%%</span></td><td>%d</td></tr>\n" %
-                             (parties[party]['nm'], party_class,
-                              choice['vot'][party]/total_ballots,
-                              choice['vot'][party]))
+                    text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{3}</td></tr>\n" \
+                                .format(parties[party]['nm'], party_class,
+                                        choice['vot'][party]/total_ballots,
+                                        choice['vot'][party]))
         text.append("<tr><td/><td colspan=3>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
         text.append("<tr><td/><td colspan=3>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
         text.append("<tr><td/><td colspan=3>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])

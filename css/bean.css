@@ -84,3 +84,25 @@ ul {
 #area {
         width: 30%;
 }
+
+progress.CON::-moz-progress-bar {
+    //background-color: //???
+}
+progress.DEM::-moz-progress-bar {
+    background-color: blue;
+}
+progress.GRN::-moz-progress-bar {
+    background-color: green;
+}
+progress.IND::-moz-progress-bar {
+    //background-color: //???;
+}
+progress.LIB::-moz-progress-bar {
+    //background-color: //???;
+}
+progress.REP::-moz-progress-bar {
+    background-color: red;
+}
+progress.WOR::-moz-progress-bar {
+    //background-color: //blue and white;
+}
