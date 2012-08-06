@@ -57,6 +57,8 @@ $(document).ready(function() {
     // Populate the tab bar
     $('#tabs').load('html/tabs.html', function(data) {
         clickLoad(".loadE", electionLoad);
+        $('.loadE')[0].click()
+
     });
 
     // Set up global variables to help with state
