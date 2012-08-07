@@ -196,9 +196,10 @@ def scrape(election):
     write_html(election.county, election.results)
 
 
+@defer.inlineCallbacks
 def loopOrNot(election):
     if options.loop:
-        LoopingCall(scrape, election).start(options.interval, True)
+        yield LoopingCall(scrape, election).start(options.interval, True)
     else:
         scrape(election)
 
