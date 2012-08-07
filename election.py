@@ -19,6 +19,7 @@
 
 import optparse
 import os
+import string
 from time import sleep
 import urllib
 
@@ -177,7 +178,9 @@ def soup_to_dict(soup, key, values):
             elif value in ["bal", "s"]:
                 data[item[key]][value] = int(item.get(value, 1))
             else:
-                data[item[key]][value] = item.get(value, '0').encode('ASCII', 'xmlcharrefreplace')
+                data[item[key]][value] = string.capwords(item.get(value, '0')
+                                         .encode('ASCII', 'xmlcharrefreplace'))
+
 
     return data
 
