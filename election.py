@@ -25,7 +25,7 @@ import urllib
 
 from BeautifulSoup import BeautifulStoneSoup
 
-from twisted.internet import reactor, threads
+from twisted.internet import reactor, threads, defer
 from twisted.internet.task import LoopingCall
 
 from gitsupport import commitAll
@@ -203,6 +203,11 @@ def loopOrNot(election):
         scrape(election)
 
 
+def done(*args, **kwargs):
+    """Stop the reactor when the time comes."""
+    reactor.callFromThread(reactor.stop)
+
+
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-l", "--loop", dest="loop",
@@ -215,6 +220,8 @@ if __name__ == "__main__":
 
     results = dict()
     clear_tabs()
+
+    deferreds = []
     for county in BASE_URLS:
         e = Election(county)
         results[county] = e
@@ -223,5 +230,9 @@ if __name__ == "__main__":
         d = threads.deferToThread(e.initial_read)
 
         d.addCallback(loopOrNot)
+        deferreds.append(d)
+
+    finish = defer.DeferredList(deferreds)
+    finish.addBoth(done)
 
     reactor.run()
