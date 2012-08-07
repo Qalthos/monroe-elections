@@ -196,6 +196,13 @@ def scrape(election):
     write_html(election.county, election.results)
 
 
+def loopOrNot(election):
+    if options.loop:
+        LoopingCall(scrape, election).start(options.interval, True)
+    else:
+        scrape(election)
+
+
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-l", "--loop", dest="loop",
@@ -214,12 +221,6 @@ if __name__ == "__main__":
 
         print("Reading data for %s" % county)
         d = threads.deferToThread(e.initial_read)
-
-        def loopOrNot(election):
-            if options.loop:
-                LoopingCall(scrape, election).start(options.interval, True)
-            else:
-                scrape(election)
 
         d.addCallback(loopOrNot)
 
