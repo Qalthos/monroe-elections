@@ -145,11 +145,12 @@ class Election(object):
     def pull_file(self, filename):
         """Pulls a file from a remote source and saves it to the disk."""
         url = "%s%s" % (BASE_URLS[self.county], filename)
+        filepath = os.path.join(self.filepath, filename)
 
-        (filename, headers) = urllib.urlretrieve(url, filename)
+        urllib.urlretrieve(url, filepath)
         commitAll(self.filepath)
 
-        return os.path.join(self.filepath, filename)
+        return filepath
 
 
 def soup_to_dict(soup, key, values):
