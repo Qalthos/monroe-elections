@@ -149,6 +149,7 @@ class Election(object):
         filepath = os.path.join(self.filepath, filename)
 
         urllib.urlretrieve(url, filepath)
+
         commitAll(self.filepath)
 
         return filepath
@@ -181,7 +182,6 @@ def soup_to_dict(soup, key, values):
                 data[item[key]][value] = string.capwords(item.get(value, '0')
                                          .encode('ASCII', 'xmlcharrefreplace'))
 
-
     return data
 
 
@@ -192,7 +192,7 @@ def scrape(election):
     print "Writing json."
     write_json(election.results)
 
-    print "Writing file(s)."
+    print "Writing html."
     write_html(election.county, election.results)
 
 
