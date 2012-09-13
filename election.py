@@ -23,7 +23,7 @@ import string
 from time import sleep
 import urllib
 
-from BeautifulSoup import BeautifulStoneSoup
+from bs4 import BeautifulSoup
 
 from twisted.internet import reactor, threads, defer
 from twisted.internet.task import LoopingCall
@@ -64,7 +64,7 @@ class Election(object):
         with open(filename) as file_:
             html = file_.read()
 
-        soup = BeautifulStoneSoup(html)
+        soup = BeautifulSoup(html)
 
         election = soup.find('election')
         self.results['election'] = {'nm': election['nm'], 'des': election['des'], \
@@ -121,7 +121,7 @@ class Election(object):
         with open(filename) as file_:
             html = file_.read()
 
-        soup = BeautifulStoneSoup(html)
+        soup = BeautifulSoup(html)
 
         election = soup.find('results')
         self.results['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
