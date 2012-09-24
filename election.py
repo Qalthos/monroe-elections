@@ -105,7 +105,8 @@ class Election(object):
         choices = soup.findAll('choice')
         self.results['choice'] = soup_to_dict(choices, 'id', ['nm', 'conid', 's', 'id'])
 
-        tabs(self.county, self.results['election']['nm'])
+        tabs(self.county, ' '.join((self.results['election']['jd'],
+                                    self.results['election']['des'])))
 
         return self
 
