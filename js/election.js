@@ -48,16 +48,13 @@ function electionLoad() {
 
 function clickLoad(element, fn) {
     $(element).click(fn);
-    if($(element).length == 1) {
-        $(element).click();
-    }
+    $(element)[0].click();
 }
 
 $(document).ready(function() {
     // Populate the tab bar
     $('#tabs').load('html/tabs.html', function(data) {
         clickLoad(".loadE", electionLoad);
-        $('.loadE')[0].click()
 
     });
 
