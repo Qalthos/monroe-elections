@@ -108,25 +108,25 @@ progress.REP::-moz-progress-bar {
 progress.REP::-webkit-progress-value {
     background-color: red;
 }
-/*progress.CON::-moz-progress-bar {
-    background-color: ???;
+progress.CON::-moz-progress-bar {
+    background-color: #ff8040;
 }
 progress.CON::-webkit-progress-value {
-    background-color: ???;
+    background-color: #ff8040;
 }
 progress.IND::-moz-progress-bar {
-    background-color: ???;
+    background-color: purple;
 }
 progress.IND::-webkit-progress-value {
-    background-color: ???;
+    background-color: purple;
 }
 progress.LIB::-moz-progress-bar {
-    background-color: ???;
+    background-color: #396D9D;
 }
 progress.LIB::-webkit-progress-value {
-    background-color: ???;
+    background-color: #396D9D;
 }
-progress.WOR::-moz-progress-bar {
+/*progress.WOR::-moz-progress-bar {
     background-color: blue and white;
 }
 progress.WOR::-webkit-progress-value {
