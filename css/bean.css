@@ -126,9 +126,9 @@ progress.LIB::-moz-progress-bar {
 progress.LIB::-webkit-progress-value {
     background-color: #396D9D;
 }
-/*progress.WOR::-moz-progress-bar {
-    background-color: blue and white;
+progress.WF::-moz-progress-bar {
+    background-image: -moz-linear-gradient(top, #0000ff 0%, #0000ff 50%, #ffffff 50%, #ffffff 100%);
 }
-progress.WOR::-webkit-progress-value {
-    background-color: blue and white;
-}*/
+progress.WF::-webkit-progress-value {
+    background-image: -webkit-linear-gradient(top, #0000ff 0%,#0000ff 50%,#ffffff 50%,#ffffff 100%);
+}

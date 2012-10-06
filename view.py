@@ -16,7 +16,7 @@ except ImportError:
 import os
 from operator import itemgetter
 
-BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WOR', 'IND']
+BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WF', 'IND']
 
 def print_tables(data_dict):
     """
