@@ -105,6 +105,7 @@ def area(areatypes, areas, contests):
 
 def contest(contests, choices, parties):
     text = list()
+    text.append('<html><head><link rel="stylesheet" href="../../css/progress.css" type="text/css" /></head><body>')
     for contest in sort_by_s(contests):
         if contest['bal'] == 0:
             contest['bal'] = 1
@@ -150,6 +151,8 @@ def contest(contests, choices, parties):
         text.append("<tr><td/><td colspan=3>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
         text.append("</table><br/>\n")
         text.append("</div>\n")
+
+    text.append('</body></html>')
     return text
 
 
