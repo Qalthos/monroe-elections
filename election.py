@@ -33,8 +33,8 @@ from view import write_html, write_json, tabs, clear_tabs
 
 BASE_URLS = {
     'monroe': "http://enr.monroecounty.gov/",
-    'suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12pf/", #General Election is YYge
-    'chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012%20September%20Primary/",
+    'suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/12ge/",
+    'chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2012 General Election Results/",
 }
 
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
