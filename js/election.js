@@ -14,19 +14,26 @@ function areaLoad() {
     $('#area').load(toLoad, function(data) {
         clickLoad(".loadC", contestLoad);
     });
+
+    if(activeRace != null) {
+        activeRace.removeClass('active');
+    }
+    activeRace = $(this).parent();
+    activeRace.addClass('active');
+
     return false;
 }
 
 function electionLoad() {
     loadPrefix = 'html/' + $(this).attr('id');
-    function progress() {
-        $('#progress').load(loadPrefix + '/update.html');
-        $('#list').load(loadPrefix + '/area.html #list', function(data) {
-            clickLoad(".loadA", areaLoad);
-        });
-    }
+    $('#list').load(loadPrefix + '/area.html #list', function(data) {
+        clickLoad(".loadA", areaLoad);
+    });
     if(electionInterval != null) {
         clearInterval(electionInterval);
+    }
+    function progress() {
+        $('#progress').load(loadPrefix + '/update.html');
     }
     electionInterval = setInterval(progress, 60000);
     progress();
