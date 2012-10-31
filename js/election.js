@@ -30,6 +30,11 @@ function areaLoad() {
 }
 
 function electionLoad() {
+    // Don't reload another county's results
+    $('#area').empty();
+    $('#contest').empty();
+    clicked = null;
+
     loadPrefix = 'html/' + $(this).attr('id');
     $('#list').load(loadPrefix + '/area.html #list', function(data) {
         clickLoad(".loadA", areaLoad);
@@ -46,11 +51,6 @@ function electionLoad() {
     activeTab = $(this).parent();
     activeTab.addClass('active');
 
-    // Don't reload another county's results
-    clearInterval(contestInterval);
-    contestInterval = null;
-    $('#area').empty();
-    $('#contest').empty();
     return false;
 }
 
