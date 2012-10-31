@@ -1,6 +1,6 @@
 function intervalHandler() {
     if(clicked != null) {
-        var toLoad = loadPrefix + '/contest.html #c' + $(this).attr('id');
+        var toLoad = loadPrefix + '/contest.html #c' + $(clicked).attr('id');
         $('#contest').load(toLoad);
     }
     $('#progress').load(loadPrefix + '/update.html');
