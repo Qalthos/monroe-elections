@@ -1,11 +1,16 @@
-function contestLoad() {
-    var toLoad = loadPrefix + '/contest.html #c' + $(this).attr('id');
-    $('#contest').load(toLoad);
-    clicked = $(this)
-    if(contestInterval != null) {
-            clearInterval(contestInterval);
+function intervalHandler() {
+    if(clicked != null) {
+        var toLoad = loadPrefix + '/contest.html #c' + $(this).attr('id');
+        $('#contest').load(toLoad);
     }
-    contestInterval = setInterval(clicked.click, 60000);
+    $('#progress').load(loadPrefix + '/update.html');
+}
+
+function contestLoad() {
+    clicked = $(this);
+    // This will actually load the data into the div.
+    intervalHandler();
+
     return false;
 }
 
@@ -32,11 +37,7 @@ function electionLoad() {
     if(electionInterval != null) {
         clearInterval(electionInterval);
     }
-    function progress() {
-        $('#progress').load(loadPrefix + '/update.html');
-    }
-    electionInterval = setInterval(progress, 60000);
-    progress();
+    electionInterval = setInterval(intervalHandler, 60000);
 
     //Switch active tabs
     if(activeTab != null) {
