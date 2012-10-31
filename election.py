@@ -67,6 +67,10 @@ class Election(object):
         soup = BeautifulSoup(html)
 
         election = soup.find('election')
+        if not election:
+            #Something went wrong... bailing.
+            return None
+
         self.results['election'] = {'nm': election['nm'], 'des': election['des'], \
             'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
 
@@ -149,9 +153,12 @@ class Election(object):
         url = "%s%s" % (BASE_URLS[self.county], filename)
         filepath = os.path.join(self.filepath, filename)
 
-        urllib.urlretrieve(url, filepath)
-
-        commitAll(self.filepath)
+        try:
+            urllib.urlretrieve(url, filepath)
+            commitAll(self.filepath)
+        except IOError:
+            # Connection timed out
+            pass
 
         return filepath
 
@@ -199,7 +206,9 @@ def scrape(election):
 
 @defer.inlineCallbacks
 def loopOrNot(election):
-    if options.loop:
+    if not election:
+        return
+    elif options.loop:
         yield LoopingCall(scrape, election).start(options.interval, True)
     else:
         scrape(election)
