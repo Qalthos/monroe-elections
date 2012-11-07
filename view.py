@@ -122,7 +122,7 @@ def contest(contests, choices, parties):
         text.append("<a name='c%s' />\n" % contest['id'])
         text.append("<div id='c%s'>\n" % contest['id'])
         text.append("<table>\n")
-        text.append("<tr><th colspan=6>%s</th></tr>\n" % contest['nm'])
+        text.append("<tr><th colspan=5>%s</th></tr>\n" % contest['nm'])
         total_ballots = contest['bal']/100.0
         for choice in sort_by_s(choices):
             if choice['conid'] == contest['id']:
@@ -157,9 +157,9 @@ def contest(contests, choices, parties):
                         .format(parties[party]['nm'], party_class,
                             choice['vot'][party]/total_ballots,
                             choice['vot'][party]))
-        text.append("<tr><td/><td colspan=4>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
-        text.append("<tr><td/><td colspan=4>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
-        text.append("<tr><td/><td colspan=4>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
+        text.append("<tr><td/><td colspan=3>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
+        text.append("<tr><td/><td colspan=3>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
+        text.append("<tr><td/><td colspan=3>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
         text.append("</table><br/>\n")
         text.append("</div>\n")
 
