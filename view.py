@@ -146,17 +146,17 @@ def contest(contests, choices, parties):
                     total = choice['vot'].pop('tot')
                     party = "Total"
                 text.append("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td><progress class='{3}' value={4} max=100 /> {4:.0f}%</td><td>{5}</td></tr>\n" \
-                            .format(winner, choice['nm'], party, party_class,
-                                    total/total_ballots, total))
+                    .format(winner, choice['nm'], party, party_class,
+                            total/total_ballots, total))
                 party_list = sorted(choice['vot'], key=lambda pid: parties[pid]['s'])
                 for party in party_list:
                     party_class = 'OTHER'
                     if parties[party]['ab'].upper() in BAR_TYPES:
                         party_class = BAR_TYPES[parties[party]['ab'].upper()]
-                    text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{2:.0f}%</td><td>{3}</td></tr>\n" \
-                                .format(parties[party]['nm'], party_class,
-                                        choice['vot'][party]/total_ballots,
-                                        choice['vot'][party]))
+                    text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{3}</td></tr>\n" \
+                        .format(parties[party]['nm'], party_class,
+                            choice['vot'][party]/total_ballots,
+                            choice['vot'][party]))
         text.append("<tr><td/><td colspan=4>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
         text.append("<tr><td/><td colspan=4>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
         text.append("<tr><td/><td colspan=4>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
