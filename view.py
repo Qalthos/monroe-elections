@@ -16,7 +16,16 @@ except ImportError:
 import os
 from operator import itemgetter
 
-BAR_TYPES = ['DEM', 'REP', 'GRN', 'LBT', 'CON', 'WF', 'IND']
+BAR_TYPES = {
+    'DEM': 'democrat',
+    'REP': 'republican',
+    'GRN': 'green',
+    'LBT': 'libertarian',
+    'CON': 'conservative',
+    'WF': 'workingfamilies',
+    'WOR': 'workingfamilies',
+    'IND': 'independence'
+}
 
 def print_tables(data_dict):
     """
@@ -128,7 +137,7 @@ def contest(contests, choices, parties):
                     single_line = choice['vot'].popitem()
                     pid = single_line[0]
                     if parties[pid]['ab'].upper() in BAR_TYPES:
-                        party_class = parties[pid]['ab'].upper()
+                        party_class = BAR_TYPES[parties[pid]['ab'].upper()]
                     total = single_line[1]
                     party = parties[pid]['nm']
                 else:
@@ -141,7 +150,7 @@ def contest(contests, choices, parties):
                 for party in party_list:
                     party_class = 'OTHER'
                     if parties[party]['ab'].upper() in BAR_TYPES:
-                        party_class = parties[party]['ab'].upper()
+                        party_class = BAR_TYPES[parties[party]['ab'].upper()]
                     text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{3}</td></tr>\n" \
                                 .format(parties[party]['nm'], party_class,
                                         choice['vot'][party]/total_ballots,
