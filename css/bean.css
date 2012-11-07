@@ -65,11 +65,8 @@ ul {
         margin: 0 10px;
 }
 
-.active {
-        background-color: rgba(255,255,255,.5);
-        border: 1px;
-        border-bottom: 0;
-        border-style: solid;
+.active a {
+        color: #695;
 }
 
 #list {
