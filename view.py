@@ -82,8 +82,9 @@ def clear_tabs():
 
 def update(election, areatypes):
     """Writes out election information to a basic HTML file."""
-    return "<h2>Reporting Precincts: %s/%s</h2>\n<h3>Last updated: %s</h3>" % \
-                (election['clpol'], election['pol'], election['ts'])
+    return "<h2>Reporting Precincts: %s/%s (%0.0f%%)</h2>\n<h3>Last updated: %s</h3>" % \
+                (election['clpol'], election['pol'],
+                 float(election['clpol'])/election['pol']*100, election['ts'])
 
 
 def area(areatypes, areas, contests):
@@ -120,7 +121,7 @@ def contest(contests, choices, parties):
             contest['bal'] = 1
         text.append("<div id='c%s'>\n" % contest['id'])
         text.append("<table>\n")
-        text.append("<tr><th colspan=5>%s</th></tr>\n" % contest['nm'])
+        text.append("<tr><th colspan=6>%s</th></tr>\n" % contest['nm'])
         total_ballots = contest['bal']/100.0
         for choice in sort_by_s(choices):
             if choice['conid'] == contest['id']:
@@ -151,13 +152,13 @@ def contest(contests, choices, parties):
                     party_class = 'OTHER'
                     if parties[party]['ab'].upper() in BAR_TYPES:
                         party_class = BAR_TYPES[parties[party]['ab'].upper()]
-                    text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{3}</td></tr>\n" \
+                    text.append("<tr><td colspan=2/><td>{0}</td><td><progress class='{1}' value={2} max=100 /> {2:.0f}%</td><td>{2:.0f}%</td><td>{3}</td></tr>\n" \
                                 .format(parties[party]['nm'], party_class,
                                         choice['vot'][party]/total_ballots,
                                         choice['vot'][party]))
-        text.append("<tr><td/><td colspan=3>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
-        text.append("<tr><td/><td colspan=3>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
-        text.append("<tr><td/><td colspan=3>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
+        text.append("<tr><td/><td colspan=4>Blank Ballots<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['bl'])
+        text.append("<tr><td/><td colspan=4>Undervotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['uv'])
+        text.append("<tr><td/><td colspan=4>Overvotes<a href='#key'>*</a></td><td>%s</td></tr>\n" % contest['ov'])
         text.append("</table><br/>\n")
         text.append("</div>\n")
 
