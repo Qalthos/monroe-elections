@@ -11,6 +11,12 @@ function contestLoad() {
     // This will actually load the data into the div.
     intervalHandler();
 
+    if(activeContest != null) {
+        activeContest.removeClass('active');
+    }
+    activeContest = $(this).parent();
+    activeContest.addClass('active');
+
     return false;
 }
 
@@ -63,11 +69,12 @@ $(document).ready(function() {
     // Populate the tab bar
     $('#tabs').load('html/tabs.html', function(data) {
         clickLoad(".loadE", electionLoad);
-
     });
 
     // Set up global variables to help with state
     activeTab = null;
+    activeRace = null;
+    activeContest = null;
     contestInterval = null;
     electionInterval = null;
 });
