@@ -119,6 +119,7 @@ def contest(contests, choices, parties):
     for contest in sort_by_s(contests):
         if contest['bal'] == 0:
             contest['bal'] = 1
+        text.append("<a name='c%s' />\n" % contest['id'])
         text.append("<div id='c%s'>\n" % contest['id'])
         text.append("<table>\n")
         text.append("<tr><th colspan=6>%s</th></tr>\n" % contest['nm'])
