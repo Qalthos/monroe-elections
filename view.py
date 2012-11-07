@@ -84,7 +84,7 @@ def update(election, areatypes):
     """Writes out election information to a basic HTML file."""
     return "<h2>Reporting Precincts: %s/%s (%0.0f%%)</h2>\n<h3>Last updated: %s</h3>" % \
                 (election['clpol'], election['pol'],
-                 float(election['clpol'])/election['pol']*100, election['ts'])
+                 float(election['clpol'])/float(election['pol'])*100, election['ts'])
 
 
 def area(areatypes, areas, contests):
