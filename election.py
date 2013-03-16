@@ -76,32 +76,18 @@ class Election(object):
 
         contests = soup.findAll('contest')
         self.results['contest'] = soup_to_dict(contests, 'id', ['nm', 'aid', 'el', 's', 'id'])
-        seen_aids = set()
-        for contest in self.results['contest'].values():
-            seen_aids.add(contest['aid'])
+        seen_aids = set(map(lambda x: x['aid'], self.results['contest'].values()))
 
         areas = soup.findAll('area')
         self.results['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
-        seen_atids = set()
-        dropped_aids = set()
-        for aid, area in self.results['area'].items():
-            if aid not in seen_aids:
-                # No contest is attached to this area, so we can ignore it
-                dropped_aids.add(aid)
-            else:
-                seen_atids.add(area['atid'])
-        for aid in dropped_aids:
-            del self.results['area'][aid]
+        self.results['area'] = dict((k, v) for k, v in self.results['area'].items()
+                                                    if k in seen_aids)
+        seen_atids = set(map(lambda x: x['atid'], self.results['area'].values()))
 
         areatypes = soup.findAll('areatype')
         self.results['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
-        dropped_atids = set()
-        for atid in self.results['areatype']:
-            if atid not in seen_atids:
-                # No areas attached to an areatype?  Drop those too.
-                dropped_atids.add(atid)
-        for atid in dropped_atids:
-            del self.results['areatype'][atid]
+        self.results['areatype'] = dict((k, v) for k, v in self.results['areatype'].items()
+                                                        if k in seen_atids)
 
         parties = soup.findAll('party')
         self.results['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
