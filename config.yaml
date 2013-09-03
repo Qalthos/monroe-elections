@@ -1,0 +1,8 @@
+monroe:
+  url: http://enr.monroecounty.gov/
+suffolk:
+  base_url: http://apps.suffolkcountyny.gov/boe/eleres/
+chautauqua:
+  base_url: http://www.co.chautauqua.ny.us/departments/boe/Documents/
+orange:
+  base_url: http://boe.co.orange.ny.us/
