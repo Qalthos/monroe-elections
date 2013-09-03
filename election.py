@@ -20,7 +20,6 @@
 import optparse
 import os
 import string
-from time import sleep
 import urllib
 
 from bs4 import BeautifulSoup
