@@ -80,14 +80,14 @@ class Election(object):
 
         areas = soup.findAll('area')
         self.results['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
-        self.results['area'] = dict((k, v) for k, v in self.results['area'].items()
-                                                    if k in seen_aids)
+        self.results['area'] = {k: v for k, v in self.results['area'].items()
+                                              if k in seen_aids}
         seen_atids = set(map(lambda x: x['atid'], self.results['area'].values()))
 
         areatypes = soup.findAll('areatype')
         self.results['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
-        self.results['areatype'] = dict((k, v) for k, v in self.results['areatype'].items()
-                                                        if k in seen_atids)
+        self.results['areatype'] = {k: v for k, v in self.results['areatype'].items()
+                                                  if k in seen_atids}
 
         parties = soup.findAll('party')
         self.results['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
