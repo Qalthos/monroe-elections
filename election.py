@@ -69,7 +69,7 @@ class Election(object):
         election = soup.find('election')
         if not election:
             #Something went wrong... bailing.
-            return None
+            return self
 
         self.results['election'] = {'nm': election['nm'], 'des': election['des'], \
             'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
