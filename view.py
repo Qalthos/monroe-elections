@@ -54,7 +54,7 @@ def write_html(county, county_data):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    text = update(county_data['election'], county_data['areatype'])
+    text = update(county_data['election'], county_data['areatype'], county)
     with open(os.path.join(output_dir, 'update.html'), 'w') as update_file:
         update_file.writelines(text)
 
@@ -80,11 +80,14 @@ def clear_tabs():
         tab_file.write("")
 
 
-def update(election, areatypes):
+def update(election, areatypes, county):
     """Writes out election information to a basic HTML file."""
-    return "<h2>Reporting Precincts: %s/%s (%0.0f%%)</h2>\n<h3>Last updated: %s</h3>" % \
-                (election['clpol'], election['pol'],
-                 float(election['clpol'])/float(election['pol'])*100, election['ts'])
+    return """<img id='logo' src='data-submodule/{}/logo.jpg' />
+              <h2>Reporting Precincts: {}/{} ({:0.1f}%)</h2>
+              <h3>Last updated: {}</h3>""".format(
+                county, election['clpol'], election['pol'],
+                float(election['clpol'])/float(election['pol'])*100,
+                election['ts'])
 
 
 def area(areatypes, areas, contests):
