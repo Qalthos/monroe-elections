@@ -60,6 +60,7 @@ class Election(object):
         """
 
         filename = self.pull_file('ElectionEvent.xml')
+        self.logo = self.pull_file('logo.jpg')
         with open(filename) as file_:
             html = file_.read()
 
@@ -140,11 +141,14 @@ class Election(object):
 
         try:
             r = requests.get(url)
+            if not r.status_code == 200:
+                # Can't get it
+                return filepath
             with open(filepath, 'w') as out_file:
                 out_file.write(r.content)
             commitAll(self.filepath)
         except requests.exceptions.ConnectionError:
-            # Connection timed out
+            # Connection timed out, use the last one we have
             pass
 
         return filepath
