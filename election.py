@@ -20,10 +20,9 @@
 import optparse
 import os
 import string
-import urllib
 
 from bs4 import BeautifulSoup
-
+import requests
 from twisted.internet import reactor, threads, defer
 from twisted.internet.task import LoopingCall
 
@@ -140,9 +139,11 @@ class Election(object):
         filepath = os.path.join(self.filepath, filename)
 
         try:
-            urllib.urlretrieve(url, filepath)
+            r = requests.get(url)
+            with open(filepath, 'w') as out_file:
+                out_file.write(r.content)
             commitAll(self.filepath)
-        except IOError:
+        except requests.exceptions.ConnectionError:
             # Connection timed out
             pass
 
