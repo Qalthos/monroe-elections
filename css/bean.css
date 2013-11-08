@@ -81,5 +81,9 @@ ul {
 }
 
 #area {
+    overflow-y: scroll;
+    height: 300px;
+}
+#out_area {
         width: 30%;
 }
