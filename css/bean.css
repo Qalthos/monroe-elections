@@ -22,9 +22,24 @@ img         { border:0; }
 p           { margin-bottom:20px; }
 a           { color:#680; -webkit-transition:all .2s;}
 a:hover     { text-decoration:none;}
-table       { border:1px solid #666; border-width:1px 0; border-collapse:collapse; background-color:rgba(255,255,255,.5); width: 100%; }
+table, .table {
+  border:1px solid #666;
+  border-width:1px 0;
+  border-collapse:collapse;
+  background-color:rgba(255,255,255,.5);
+}
+.table {
+  clear: both;
+}
 th          { border:1px solid #666; border-width:1px 0; background-color:rgba(51,51,51,.1);}
-td          { border:1px solid #CCC; border-width:1px 0; padding:2px 10px; }
+td, .cell {
+  border:1px solid #CCC;
+  border-width:1px 0;
+  padding:2px 10px;
+}
+.cell {
+  float: left;
+}
 div#area    { overflow-y:auto; }
 
 
@@ -40,11 +55,10 @@ h1, h2, h3 {
         margin: 0 auto -60px;
 }
 .footer {
-        height: 120px;
-}
-.footer {
-        text-align: center;
-        font-size:80%;
+  height: 120px;
+  text-align: center;
+  font-size:80%;
+  clear: both;
 }
 
 img.foss-logo {
@@ -81,9 +95,11 @@ ul {
 }
 
 #area {
+    width: 30%;
     overflow-y: scroll;
     height: 300px;
+    float: left;
 }
-#out_area {
-        width: 30%;
+#contest {
+  width: 60%;
 }

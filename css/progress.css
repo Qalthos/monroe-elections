@@ -64,3 +64,8 @@ progress.workingfamilies::-moz-progress-bar {
 progress.workingfamilies::-webkit-progress-value {
     background-image: -webkit-linear-gradient(top, #0000ff 0%,#0000ff 50%,#ffffff 50%,#ffffff 100%);
 }
+
+/* Make sure the tables look good on the page */
+table {
+    width: 100%;
+}
