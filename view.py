@@ -97,13 +97,14 @@ def area(areatypes, areas, contests):
 
         list_text.append("<li><a href='#' class='loadA' id='%s'>List of %s races</a></li>\n" %
             (areatype['id'], areatype['nm']))
+
         text.append("<div id='a%s'>\n" % areatype['id'])
         text.append("<h3>%s Races</h3>\n" % areatype['nm'])
         text.append("<ul>\n")
         for area in sort_by_s(areas):
             if area['atid'] == areatype['id']:
                 if areatype['nm'] != area['nm']:
-                    text.append("<li><span align='left'>%s</span><ul>\n" %
+                    text.append("<li>%s<ul>\n" %
                              (area['nm']))
                 for contest in sort_by_s(contests):
                     if contest['aid'] == area['id']:
