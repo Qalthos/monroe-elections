@@ -42,8 +42,8 @@ function electionLoad() {
     clicked = null;
 
     loadPrefix = 'html/' + $(this).attr('id');
-    $('#list').load(loadPrefix + '/area.html #list', function(data) {
-        clickLoad(".loadA", areaLoad);
+    $('#list').load(loadPrefix + '/area.html', function(data) {
+        clickLoad(".loadC", contestLoad);
     });
     if(electionInterval != null) {
         clearInterval(electionInterval);

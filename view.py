@@ -91,30 +91,22 @@ def update(election, areatypes, county):
 
 
 def area(areatypes, areas, contests):
-    list_text = ["<ul id='list'>\n"]
-    text = list()
+    list_text = ["<ul>\n"]
     for areatype in sort_by_s(areatypes):
+        list_text.append("<li>%s races<ul>\n" % areatype['nm'])
 
-        list_text.append("<li><a href='#' class='loadA' id='%s'>List of %s races</a></li>\n" %
-            (areatype['id'], areatype['nm']))
-
-        text.append("<div id='a%s'>\n" % areatype['id'])
-        text.append("<h3>%s Races</h3>\n" % areatype['nm'])
-        text.append("<ul>\n")
         for area in sort_by_s(areas):
             if area['atid'] == areatype['id']:
                 if areatype['nm'] != area['nm']:
-                    text.append("<li>%s<ul>\n" %
+                    list_text.append("<li>%s<ul>\n" %
                              (area['nm']))
                 for contest in sort_by_s(contests):
                     if contest['aid'] == area['id']:
-                        text.append("<li><a href='#' class='loadC' id='%s'>%s</a></li>\n" %
+                        list_text.append("<li><a href='#' class='loadC' id='%s'>%s</a></li>\n" %
                                  (contest['id'], contest['nm']))
-                text.append('</ul></li>\n')
-        text.append("</table>\n")
-        text.append("</div>\n")
+                list_text.append('</ul></li>\n')
+        list_text.append('</ul></li>\n')
     list_text.append("</ul>\n")
-    list_text.extend(text)
     return list_text
 
 

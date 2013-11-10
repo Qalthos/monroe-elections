@@ -91,15 +91,11 @@ ul {
 }
 
 #list {
-        width: 50%;
-}
-
-#area {
     width: 30%;
     overflow-y: scroll;
-    height: 300px;
-    float: left;
+    height: 800px;
 }
+
 #contest {
   width: 60%;
 }
