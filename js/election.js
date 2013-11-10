@@ -1,38 +1,33 @@
+$(function() {
+    // Populate the tab bar
+    $('#tabs').load('html/tabs.html', function(data) {
+        clickLoad(".loadE", electionLoad);
+    });
+
+    // Set up global variables to help with state
+    activeTab = null;
+    activeContest = null;
+    electionInterval = null;
+});
+
+function clickLoad(element, fn) {
+    // Set the cick function for all the subelements, then click the firstr
+    // one.
+    $(element).click(fn);
+    $(element)[0].click();
+}
+
 function intervalHandler() {
     if(clicked != null) {
         var toLoad = loadPrefix + '/contest.html #c' + $(clicked).attr('id');
-        $('#contest').load(toLoad);
+    } else {
+        collection = $('#area').find('a');
+        randomIndex = Math.round(Math.random() * $(collection).length);
+        randomEl = $(collection).eq(randomIndex);
+        var toLoad = loadPrefix + '/contest.html #c' + $(randomEl).attr('id')
     }
+    $('#contest').load(toLoad);
     $('#progress').load(loadPrefix + '/update.html');
-}
-
-function contestLoad() {
-    clicked = $(this);
-    // This will actually load the data into the div.
-    intervalHandler();
-
-    if(activeContest != null) {
-        activeContest.removeClass('active');
-    }
-    activeContest = $(this).parent();
-    activeContest.addClass('active');
-
-    return false;
-}
-
-function areaLoad() {
-    var toLoad = loadPrefix + '/area.html #a'+$(this).attr('id');
-    $('#area').load(toLoad, function(data) {
-        clickLoad(".loadC", contestLoad);
-    });
-
-    if(activeRace != null) {
-        activeRace.removeClass('active');
-    }
-    activeRace = $(this).parent();
-    activeRace.addClass('active');
-
-    return false;
 }
 
 function electionLoad() {
@@ -60,21 +55,17 @@ function electionLoad() {
     return false;
 }
 
-function clickLoad(element, fn) {
-    $(element).click(fn);
-    $(element)[0].click();
+function contestLoad() {
+    // Save the current element to a global variable for use in intervalHandler
+    clicked = $(this);
+    // This will actually load the data into the div.
+    intervalHandler();
+
+    if(activeContest != null) {
+        activeContest.removeClass('active');
+    }
+    activeContest = $(this).parent();
+    activeContest.addClass('active');
+
+    return false;
 }
-
-$(document).ready(function() {
-    // Populate the tab bar
-    $('#tabs').load('html/tabs.html', function(data) {
-        clickLoad(".loadE", electionLoad);
-    });
-
-    // Set up global variables to help with state
-    activeTab = null;
-    activeRace = null;
-    activeContest = null;
-    contestInterval = null;
-    electionInterval = null;
-});
