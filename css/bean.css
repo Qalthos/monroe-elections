@@ -61,10 +61,16 @@ h1, h2, h3 {
   clear: both;
 }
 
+.logo-div {
+    display: inline-block;
+    width: 48px;
+    overflow: hidden;
+}
+
 img.foss-logo {
         vertical-align: middle;
         height: 48px;
-        margin-right: 32px;
+        margin-right: -32px;
 }
 
 #logo {
