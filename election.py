@@ -30,10 +30,10 @@ from gitsupport import commitAll
 from view import write_html, write_json, tabs, clear_tabs
 
 BASE_URLS = {
-    'monroe': "http://enr.monroecounty.gov/",
-    'suffolk': "http://apps.suffolkcountyny.gov/boe/eleres/13ge/",
-    'chautauqua': "http://www.co.chautauqua.ny.us/departments/boe/Documents/2013 General Election Results/",
-    'orange': "http://boe.co.orange.ny.us/",
+    'monroe': 'http://enr.monroecounty.gov/',
+    'suffolk': 'http://apps.suffolkcountyny.gov/boe/eleres/14pe/',
+    'chautauqua': 'http://app.co.chautauqua.ny.us/BOE/Results/',
+    'orange': 'http://boe.co.orange.ny.us/',
 }
 
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
