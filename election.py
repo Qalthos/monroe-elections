@@ -31,7 +31,7 @@ from view import write_html, write_json, tabs, clear_tabs
 
 BASE_URLS = {
     'monroe': 'http://enr.monroecounty.gov/',
-    'suffolk': 'http://apps.suffolkcountyny.gov/boe/eleres/14pe/',
+    'suffolk': 'http://apps.suffolkcountyny.gov/boe/eleres/14ge/',
     'chautauqua': 'http://app.co.chautauqua.ny.us/BOE/Results/',
     'orange': 'http://boe.co.orange.ny.us/',
 }
