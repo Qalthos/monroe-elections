@@ -17,6 +17,7 @@
 #         Ralph Bean -- http://threebean.org
 #         Beau Bouchard -- http://beaubouchard.com
 
+from __future__ import print_function
 import optparse
 import os
 import string
@@ -186,10 +187,10 @@ def scrape(election):
     print("Scraping results for %s county" % election.county)
     election.scrape_results()
 
-    print "Writing json."
+    print("Writing json.")
     write_json(election.results)
 
-    print "Writing html."
+    print("Writing html.")
     write_html(election.county, election.results)
 
 
