@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #
 # This code is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,13 +19,12 @@
 
 from __future__ import print_function
 import argparse
+import asyncio
 import os
 import string
 
 from bs4 import BeautifulSoup
 import requests
-from twisted.internet import reactor, threads, defer
-from twisted.internet.task import LoopingCall
 
 from gitsupport import commitAll
 from view import write_html, write_json, tabs, clear_tabs
@@ -50,7 +49,7 @@ class Election(object):
         if not os.path.exists(self.filepath):
             os.mkdir(self.filepath)
 
-    def initial_read(self):
+    async def initial_read(self):
         """
         Reads the contents of ElectionEvent.xml.
         This file should not change during the election, so should only need to be
@@ -60,8 +59,8 @@ class Election(object):
 
         """
 
-        filename = self.pull_file('ElectionEvent.xml')
-        self.logo = self.pull_file('logo.jpg')
+        filename = await self.pull_file('ElectionEvent.xml')
+        self.logo = await self.pull_file('logo.jpg')
         with open(filename) as file_:
             xml = file_.read()
 
@@ -99,7 +98,7 @@ class Election(object):
 
         return self
 
-    def scrape_results(self):
+    async def scrape_results(self):
         """
         Reads the contents of results.xml.
         This is the file that has all the changing information, so this is the
@@ -107,7 +106,7 @@ class Election(object):
 
         """
 
-        filename = self.pull_file('results.xml')
+        filename = await self.pull_file('results.xml')
         with open(filename) as file_:
             xml = file_.read()
 
@@ -133,16 +132,17 @@ class Election(object):
         for id_ in results:
             self.results['choice'][id_].update(results[id_])
 
-    def pull_file(self, filename):
+    async def pull_file(self, filename):
         """Pulls a file from a remote source and saves it to the disk."""
         url = "%s%s" % (BASE_URLS[self.county], filename)
         filepath = os.path.join(self.filepath, filename)
 
         try:
-            r = requests.get(url)
-            if r.status_code == 200 and r.content:
-                with open(filepath, 'w') as out_file:
-                    out_file.write(r.content)
+            future = loop.run_in_executor(None, requests.get, url)
+            resp = await future
+            if resp.status_code == 200 and resp.content:
+                with open(filepath, 'wb') as out_file:
+                    out_file.write(resp.content)
                 commitAll(self.filepath)
         except requests.exceptions.ConnectionError:
             # Connection timed out, use the last one we have
@@ -175,15 +175,14 @@ def soup_to_dict(soup, key, values):
             elif value in ["bal", "s"]:
                 data[item[key]][value] = int(item.get(value, 1))
             else:
-                data[item[key]][value] = string.capwords(item.get(value, '0')
-                                         .encode('ASCII', 'xmlcharrefreplace'))
+                data[item[key]][value] = string.capwords(item.get(value, '0'))
 
     return data
 
 
-def scrape(election):
+async def scrape(election):
     print("Scraping results for %s county" % election.county)
-    election.scrape_results()
+    await election.scrape_results()
 
     print("Writing json.")
     write_json(election.results)
@@ -192,19 +191,20 @@ def scrape(election):
     write_html(election.county, election.results)
 
 
-@defer.inlineCallbacks
-def loopOrNot(election):
+async def loop_or_not(county, options):
+    election = Election(county)
+
+    print("Reading data for %s" % county)
+    await election.initial_read()
+
     if not election:
         return
-    elif options.loop:
-        yield LoopingCall(scrape, election).start(options.interval, True)
+    elif options.loop is False:
+        await scrape(election)
     else:
-        scrape(election)
-
-
-def done(*args, **kwargs):
-    """Stop the reactor when the time comes."""
-    reactor.callFromThread(reactor.stop)
+        while True:
+            await scrape(election)
+            await asyncio.sleep(options.interval)
 
 
 if __name__ == "__main__":
@@ -216,22 +216,14 @@ if __name__ == "__main__":
                         default=120, type=int,
                         help="number of seconds to sleep between runs")
     options = parser.parse_args()
-
-    results = dict()
     clear_tabs()
 
-    deferreds = []
-    for county in BASE_URLS:
-        e = Election(county)
-        results[county] = e
+    loop = asyncio.get_event_loop()
 
-        print("Reading data for %s" % county)
-        d = threads.deferToThread(e.initial_read)
+    tasks = [
+        asyncio.ensure_future(loop_or_not(county, options))
+        for county in BASE_URLS
+    ]
+    loop.run_until_complete(asyncio.gather(*tasks))
 
-        d.addCallback(loopOrNot)
-        deferreds.append(d)
-
-    finish = defer.DeferredList(deferreds)
-    finish.addBoth(done)
-
-    reactor.run()
+    loop.close()
