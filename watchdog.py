@@ -19,15 +19,15 @@
 from __future__ import print_function
 from datetime import datetime
 
-import bs4
+from bs4 import BeautifulSoup
 import requests
 import sh
 import yaml
 
 def check_existence(url):
     try:
-        html = requests.get(url).content
-        soup = bs4.BeautifulSoup(html)
+        xml = requests.get(url).content
+        soup = BeautifulSoup(xml, 'lxml')
         return soup.find('election')['dt']
     except:
         return False

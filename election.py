@@ -18,7 +18,7 @@
 #         Beau Bouchard -- http://beaubouchard.com
 
 from __future__ import print_function
-import optparse
+import argparse
 import os
 import string
 
@@ -63,9 +63,9 @@ class Election(object):
         filename = self.pull_file('ElectionEvent.xml')
         self.logo = self.pull_file('logo.jpg')
         with open(filename) as file_:
-            html = file_.read()
+            xml = file_.read()
 
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(xml, 'lxml')
 
         election = soup.find('election')
         if not election:
@@ -81,14 +81,12 @@ class Election(object):
 
         areas = soup.findAll('area')
         self.results['area'] = soup_to_dict(areas, 'id', ['nm', 'atid', 'el', 's', 'id'])
-        self.results['area'] = {k: v for k, v in self.results['area'].items()
-                                              if k in seen_aids}
+        self.results['area'] = {k: v for k, v in self.results['area'].items() if k in seen_aids}
         seen_atids = set(map(lambda x: x['atid'], self.results['area'].values()))
 
         areatypes = soup.findAll('areatype')
         self.results['areatype'] = soup_to_dict(areatypes, 'id', ['nm', 's', 'id'])
-        self.results['areatype'] = {k: v for k, v in self.results['areatype'].items()
-                                                  if k in seen_atids}
+        self.results['areatype'] = {k: v for k, v in self.results['areatype'].items() if k in seen_atids}
 
         parties = soup.findAll('party')
         self.results['party'] = soup_to_dict(parties, 'id', ['nm', 'ab', 's', 'id'])
@@ -111,9 +109,9 @@ class Election(object):
 
         filename = self.pull_file('results.xml')
         with open(filename) as file_:
-            html = file_.read()
+            xml = file_.read()
 
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(xml, 'lxml')
 
         election = soup.find('results')
         self.results['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
@@ -210,14 +208,14 @@ def done(*args, **kwargs):
 
 
 if __name__ == "__main__":
-    parser = optparse.OptionParser()
-    parser.add_option("-l", "--loop", dest="loop",
-                      action="store_true", default=False,
-                      help="run in a loop (infinitely)")
-    parser.add_option("-i", "--interval", dest="interval",
-                      default=120, type='float',
-                      help="number of seconds to sleep between runs")
-    options, args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--loop", dest="loop",
+                        action="store_true", default=False,
+                        help="run in a loop (infinitely)")
+    parser.add_argument("-i", "--interval", dest="interval",
+                        default=120, type=int,
+                        help="number of seconds to sleep between runs")
+    options = parser.parse_args()
 
     results = dict()
     clear_tabs()
