@@ -26,7 +26,7 @@ import string
 from bs4 import BeautifulSoup
 import requests
 
-from gitsupport import commitAll
+from gitsupport import commit_all
 from view import write_html, write_json, tabs, clear_tabs
 
 BASE_URLS = {
@@ -143,7 +143,7 @@ class Election(object):
             if resp.status_code == 200 and resp.content:
                 with open(filepath, 'wb') as out_file:
                     out_file.write(resp.content)
-                commitAll(self.filepath)
+                commit_all(self.filepath)
         except requests.exceptions.ConnectionError:
             # Connection timed out, use the last one we have
             pass
