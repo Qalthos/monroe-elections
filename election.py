@@ -42,6 +42,7 @@ LOOP = asyncio.get_event_loop()
 class Election(object):
     def __init__(self, county):
         self.county = county
+        self.logo = None
         self.results = dict()
         self.filepath = os.path.join(BASE_DIR, "data-submodule", self.county)
 
@@ -69,7 +70,7 @@ class Election(object):
         election = soup.find('election')
         if not election:
             #Something went wrong... bailing.
-            return self
+            return
 
         self.results['election'] = {'nm': election['nm'], 'des': election['des'], \
             'jd': election['jd'], 'ts': election['ts'], 'pol': 0, 'clpol': 0}
@@ -113,8 +114,12 @@ class Election(object):
         soup = BeautifulSoup(xml, 'lxml')
 
         election = soup.find('results')
-        self.results['election'].update({'ts': election['ts'], 'clpol': election['clpol'],
-                                 'pol': election['pol'], 'fin': election['fin']})
+        self.results['election'].update({
+            'ts': election['ts'],
+            'clpol': election['clpol'],
+            'pol': election['pol'],
+            'fin': election['fin']
+        })
 
         results = soup_to_dict(soup.findAll('area'), 'id', ['bal', 'vot', 'pol', 'clpol'])
         for id_ in results:
