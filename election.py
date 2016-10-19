@@ -17,7 +17,6 @@
 #         Ralph Bean -- http://threebean.org
 #         Beau Bouchard -- http://beaubouchard.com
 
-from __future__ import print_function
 import argparse
 import asyncio
 import os
@@ -37,6 +36,7 @@ BASE_URLS = {
 }
 
 BASE_DIR = os.path.split(os.path.abspath(__file__))[0]
+LOOP = asyncio.get_event_loop()
 
 
 class Election(object):
@@ -138,7 +138,7 @@ class Election(object):
         filepath = os.path.join(self.filepath, filename)
 
         try:
-            future = loop.run_in_executor(None, requests.get, url)
+            future = LOOP.run_in_executor(None, requests.get, url)
             resp = await future
             if resp.status_code == 200 and resp.content:
                 with open(filepath, 'wb') as out_file:
@@ -207,7 +207,7 @@ async def loop_or_not(county, options):
             await asyncio.sleep(options.interval)
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--loop", dest="loop",
                         action="store_true", default=False,
@@ -218,12 +218,15 @@ if __name__ == "__main__":
     options = parser.parse_args()
     clear_tabs()
 
-    loop = asyncio.get_event_loop()
 
     tasks = [
         asyncio.ensure_future(loop_or_not(county, options))
         for county in BASE_URLS
     ]
-    loop.run_until_complete(asyncio.gather(*tasks))
+    LOOP.run_until_complete(asyncio.gather(*tasks))
 
-    loop.close()
+    LOOP.close()
+
+
+if __name__ == "__main__":
+    main()
