@@ -50,7 +50,8 @@ class Election(object):
         if not os.path.exists(self.filepath):
             os.mkdir(self.filepath)
 
-    async def initial_read(self):
+    @asyncio.coroutine
+    def initial_read(self):
         """
         Reads the contents of ElectionEvent.xml.
         This file should not change during the election, so should only need to be
@@ -60,8 +61,8 @@ class Election(object):
 
         """
 
-        filename = await self.pull_file('ElectionEvent.xml')
-        self.logo = await self.pull_file('logo.jpg')
+        filename = yield from self.pull_file('ElectionEvent.xml')
+        self.logo = yield from self.pull_file('logo.jpg')
         with open(filename) as file_:
             xml = file_.read()
 
@@ -99,7 +100,8 @@ class Election(object):
 
         return self
 
-    async def scrape_results(self):
+    @asyncio.coroutine
+    def scrape_results(self):
         """
         Reads the contents of results.xml.
         This is the file that has all the changing information, so this is the
@@ -107,7 +109,7 @@ class Election(object):
 
         """
 
-        filename = await self.pull_file('results.xml')
+        filename = yield from self.pull_file('results.xml')
         with open(filename) as file_:
             xml = file_.read()
 
@@ -137,14 +139,15 @@ class Election(object):
         for id_ in results:
             self.results['choice'][id_].update(results[id_])
 
-    async def pull_file(self, filename):
+    @asyncio.coroutine
+    def pull_file(self, filename):
         """Pulls a file from a remote source and saves it to the disk."""
         url = "%s%s" % (BASE_URLS[self.county], filename)
         filepath = os.path.join(self.filepath, filename)
 
         try:
             future = LOOP.run_in_executor(None, requests.get, url)
-            resp = await future
+            resp = yield from future
             if resp.status_code == 200 and resp.content:
                 with open(filepath, 'wb') as out_file:
                     out_file.write(resp.content)
@@ -185,9 +188,10 @@ def soup_to_dict(soup, key, values):
     return data
 
 
-async def scrape(election):
+@asyncio.coroutine
+def scrape(election):
     print("Scraping results for %s county" % election.county)
-    await election.scrape_results()
+    yield from election.scrape_results()
 
     print("Writing json.")
     write_json(election.results)
@@ -196,20 +200,21 @@ async def scrape(election):
     write_html(election.county, election.results)
 
 
-async def loop_or_not(county, options):
+@asyncio.coroutine
+def loop_or_not(county, options):
     election = Election(county)
 
     print("Reading data for %s" % county)
-    await election.initial_read()
+    yield from election.initial_read()
 
     if not election:
         return
     elif options.loop is False:
-        await scrape(election)
+        yield from scrape(election)
     else:
         while True:
-            await scrape(election)
-            await asyncio.sleep(options.interval)
+            yield from scrape(election)
+            yield from asyncio.sleep(options.interval)
 
 
 def main():
@@ -225,7 +230,7 @@ def main():
 
 
     tasks = [
-        asyncio.ensure_future(loop_or_not(county, options))
+        asyncio.async(loop_or_not(county, options))
         for county in BASE_URLS
     ]
     LOOP.run_until_complete(asyncio.gather(*tasks))
