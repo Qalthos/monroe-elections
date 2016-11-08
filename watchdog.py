@@ -18,6 +18,7 @@
 """ Watchdog is a part of Monroe Election Dashboard."""
 from __future__ import print_function
 from datetime import datetime
+import sys
 
 from bs4 import BeautifulSoup
 import requests
@@ -31,6 +32,7 @@ def check_existence(url):
         return soup.find('election')['dt']
     except:
         return False
+
 
 def check_election(county, date):
     date_parsed = datetime.strptime(date, '%Y%m%d').replace(hour=12)
@@ -46,7 +48,7 @@ def check_election(county, date):
                 break
         else:
             print("There's a new election coming up in {} at {}!".format(county, date_parsed))
-            sh.at('-t', '{}1200'.format(date), _in="python election.py -l")
+            sh.at('-t', '{}1200'.format(date), _in="{} election.py -l".format(sys.executable))
 
 
 with open('config.yaml') as config_file:
