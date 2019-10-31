@@ -152,9 +152,9 @@ class Election(object):
                 with open(filepath, 'wb') as out_file:
                     out_file.write(resp.content)
                 commit_all(self.filepath)
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             # Connection timed out, use the last one we have
-            pass
+            print(e)
 
         return filepath
 
